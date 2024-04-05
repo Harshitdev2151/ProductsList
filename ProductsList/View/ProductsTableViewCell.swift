@@ -6,18 +6,33 @@
 //
 
 import UIKit
+import CoreData
 
 class ProductsTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var desc: UILabel!
+    @IBOutlet weak var category: UILabel!
+    @IBOutlet weak var productImgView: UIImageView!
+
+    func configureWith(_ product: Product) {
+        title.text = product.title
+        desc.text = product.description
+        category.text = product.category
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    func configureWithDatabaseObject(_ product: NSManagedObject) {
 
-        // Configure the view for the selected state
+        title.text = product.value(forKeyPath: "title") as? String
+        desc.text = product.value(forKeyPath: "desc") as? String
+        category.text = product.value(forKeyPath: "category") as? String
+    }
+
+    func setImage(_ img: UIImage?) {
+        DispatchQueue.main.async {
+            self.productImgView.image = img
+            self.productImgView.reloadInputViews()
+        }
     }
 
 }

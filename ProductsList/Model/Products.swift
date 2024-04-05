@@ -6,3 +6,20 @@
 //
 
 import Foundation
+
+struct Products: Codable {
+    var products: [Product]?
+    var total: Int?
+    var skip: Int?
+    var limit: Int?
+}
+
+struct Product: Codable, Hashable {
+    var title: String?
+    var description: String?
+    var thumbnail: String?
+    var price: Int?
+    var rating: Double?
+    var brand: String?
+    var category: String?
+}

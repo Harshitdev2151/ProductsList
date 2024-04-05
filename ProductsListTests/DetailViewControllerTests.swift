@@ -6,18 +6,46 @@
 //
 
 import XCTest
+@testable import ProductsList
 
 final class DetailViewControllerTests: XCTestCase {
 
+    var storyboard: UIStoryboard!
+    var sut: DetailViewController!
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        storyboard = UIStoryboard(name: "Main", bundle: nil)
+        sut = storyboard.instantiateViewController(identifier: "DetailViewController") as DetailViewController
+        sut.loadViewIfNeeded()
+        let navController = UINavigationController(rootViewController: sut)
+       // sut.viewModel = RootViewModel(productsService: mockProductsService, delegate: sut)
+
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
+    func testAddToCartNavigation() throws {
+        let myExpectation = expectation(description: "Testing navigation controler")
+
+        sut.cartBtn.titleLabel?.text = "Go to cart"
+        sut.addToCart((Any).self)
+        XCTAssertNotNil(sut.navigationController)
+        let seconds = 1.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            let cartVC = self.sut.navigationController?.topViewController
+            var isTopVCIsCartVC = false
+            if cartVC is CartTableViewController {
+                isTopVCIsCartVC = true
+            }
+            XCTAssertTrue(isTopVCIsCartVC)
+            myExpectation.fulfill()
+            // Put your code which should be executed with a delay here
+        }
+        self.wait(for: [myExpectation], timeout: 1)
+
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         // Any test you write for XCTest can be annotated as throws and async.

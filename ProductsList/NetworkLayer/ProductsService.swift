@@ -7,8 +7,8 @@
 
 import Foundation
 
-protocol NewsServiceProtocol {
-     func fetchUsers(completion: @escaping (Result<News, NetworkError>) -> Void)
+protocol ProductsServiceProtocol {
+     func fetchProducts(_ currentSkipProductCount: Int, completion: @escaping (Result<Products, NetworkError>) -> Void)
 }
 
 enum NetworkError: Error {
@@ -17,11 +17,11 @@ enum NetworkError: Error {
     // Other possible errors
 }
 
-class ProductsService: NewsServiceProtocol {
+class ProductsService: ProductsServiceProtocol {
+    func fetchProducts(_ currentSkipProductCount: Int = 10, completion: @escaping (Result<Products, NetworkError>) -> Void) {
+        let urlString = "\(EndPointURLs.productsServiceURL)\(currentSkipProductCount)"
 
-     func fetchUsers(completion: @escaping (Result<News, NetworkError>) -> Void) {
-         print("getdate is \(getdate())")
-         guard let serviceURL = URL(string: EndPointURLs.newsServiceURL) else {
+         guard let serviceURL = URL(string: urlString) else {
             completion(.failure(.invalidURL))
             return
         }
@@ -35,9 +35,9 @@ class ProductsService: NewsServiceProtocol {
                 return
             }
             do {
-                let users = try JSONDecoder().decode(News.self, from: newData)
-                if users.articles != nil {
-                    completion(.success(users))
+                let products = try JSONDecoder().decode(Products.self, from: newData)
+                if products.products != nil {
+                    completion(.success(products))
                 } else {
                     completion(.failure(.requestFailed))
                 }

@@ -6,11 +6,33 @@
 //
 
 import UIKit
+import CoreData
 
 class CartTableViewController: UITableViewController {
 
+    var products = [NSManagedObject]()
+
+    var employeeCoreDataInteractor: ProductsCoreDataInteractor!
+
+    var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+
+    var viewModel: RootViewModel = RootViewModel(productsService: ProductsService())
+    var imageLoader: ImageLoaderProtocol = AsyncImageView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.title = "CartView"
+
+        self.viewModel = RootViewModel(productsService: ProductsService(), imageLoader: self.imageLoader)
+        
+        self.employeeCoreDataInteractor = ProductsCoreDataInteractor(withContext: self.context)
+
+        
+        if let products = self.employeeCoreDataInteractor.fetchAllProductAddedToCart() {
+            self.products = products
+            self.tableView.reloadData()
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -23,23 +45,37 @@ class CartTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return products.count
     }
 
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+    
 
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        /*
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cartViewCell", for: indexPath)
+
+        let product = self.products[indexPath.row]
+        cell.textLabel?.text = product.value(forKeyPath: "title") as? String
         // Configure the cell...
 
-        return cell
+       return cell
+*/
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductsTableViewCell", for: indexPath) as? ProductsTableViewCell
+        let product = self.products[indexPath.row]
+        cell?.configureWithDatabaseObject(product)
+        self.viewModel.fetchImage(product.value(forKeyPath: "thumbnail") as? String ?? EndPointURLs.defaultImageURL) { img in
+            cell?.setImage(img ?? UIImage(named: "flower123"))
+        }
+
+        return cell ?? UITableViewCell()
     }
-    */
+
 
     /*
     // Override to support conditional editing of the table view.

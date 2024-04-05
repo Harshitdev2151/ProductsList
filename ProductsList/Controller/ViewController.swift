@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController {
 
@@ -14,18 +15,43 @@ class ViewController: UIViewController {
     var products: Products?
     var fetchingMore = false
     var limit = 0
+    var productsService: ProductsServiceProtocol = ProductsService()
+    open var calledSegue: UIStoryboardSegue!
 
+    var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    var employeeCoreDataInteractor: ProductsCoreDataInteractor?
 
+    
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+
+    @IBOutlet weak var errorButton: UIButton!
+    
+    @IBAction func pressErrorBtn(_ sender: Any) {
+        activityIndicatorView.startAnimating()
+
+        self.viewModel.fetchProducts()
+
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        activityIndicatorView.startAnimating()
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 400
         self.title = "Product"
-        self.viewModel = RootViewModel(productsService: ProductsService(), delegate: self)
-        viewModel.fetchProducts()
+        self.viewModel = RootViewModel(productsService: self.productsService, delegate: self)
+        self.viewModel.fetchProducts()
     }
 
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.employeeCoreDataInteractor = ProductsCoreDataInteractor(withContext: self.context)
+
+        guard let employeeCoreDataInteractor = self.employeeCoreDataInteractor else { return  }
+
+        self.setRightNavigationItem(employeeCoreDataInteractor: employeeCoreDataInteractor)
+    }
 
 }
 
@@ -39,6 +65,8 @@ extension ViewController: RootViewModelDelegate {
             self.products?.products?.append(contentsOf: products?.products ?? [Product()])
         }
         DispatchQueue.main.async { [weak self] in
+            self?.errorButton.isHidden = true
+            self?.activityIndicatorView.stopAnimating()
             self?.tableView.reloadData()
             self?.fetchingMore = false
             self?.tableView?.tableFooterView?.isHidden = true
@@ -46,7 +74,10 @@ extension ViewController: RootViewModelDelegate {
     }
 
     func showError(message: String) {
-
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicatorView.stopAnimating()
+            self?.errorButton.isHidden = false
+        }
     }
 }
 
@@ -61,6 +92,9 @@ extension ViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductsTableViewCell", for: indexPath) as? ProductsTableViewCell
         let product = self.products?.products?[indexPath.row] ?? Product()
         cell?.configureWith(product)
+        viewModel.fetchImage(product.thumbnail ?? EndPointURLs.defaultImageURL) { img in
+            cell?.setImage(img ?? UIImage(named: "flower123"))
+        }
         return cell ?? UITableViewCell()
     }
 
@@ -72,6 +106,25 @@ extension ViewController: UITableViewDataSource {
 }
 
 extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let product = self.products?.products?[indexPath.row] ?? Product()
+        self.performSegue(withIdentifier: "detailVC", sender: product)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationVC = segue.destination as? DetailViewController, let product = sender as? Product {
+            calledSegue = segue
+            destinationVC.product = product
+            
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+              return
+            }
+            destinationVC.context = appDelegate.persistentContainer.viewContext
+            //destinationVC.viewModel = self.viewModel
+        }
+    }
+
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
        let lastSectionIndex = tableView.numberOfSections - 1
        let lastRowIndex = tableView.numberOfRows(inSection: lastSectionIndex) - 1
@@ -93,10 +146,13 @@ extension ViewController: UITableViewDelegate {
    }
 
    func beginBatchFetch() {
-       fetchingMore = true
-       print("beginBatchFetch!")
-       tableView.reloadSections(IndexSet(integer: 1), with: .none)
-       viewModel.fetchProducts()
+           self.fetchingMore = true
+           print("beginBatchFetch!")
+           self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+       DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+           self.viewModel.fetchProducts()
+
+       })
 
    }
 
