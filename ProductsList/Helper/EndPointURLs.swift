@@ -12,6 +12,4 @@ struct EndPointURLs {
     
     static let productsServiceURL =
     "https://dummyjson.com/products?limit=10&skip="
-    //static let productsServiceURL =
-   // "https://dummyjson.com/product"
 }
