@@ -5,16 +5,20 @@
 //  Created by Harshit Kumar on 02/04/24.
 //
 
-import Foundation
 
 struct Products: Codable {
     var productList: [Product]?
     var total: Int?
     var skip: Int?
     var limit: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case total, skip, limit
+        case productList = "products"
+    }
 }
 
-struct Product: Codable, Hashable {
+struct Product: Codable {
     var title: String?
     var description: String?
     var thumbnail: String?

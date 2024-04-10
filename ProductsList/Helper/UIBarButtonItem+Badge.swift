@@ -6,9 +6,6 @@
 //
 
 import UIKit
-
-import Foundation
-
 extension UIBarButtonItem {
 
     convenience init(icon: UIImage, badge: String, _ badgeBackgroundColor: UIColor = #colorLiteral(red: 0.9156965613, green: 0.380413115, blue: 0.2803866267, alpha: 1), target: Any? = UIBarButtonItem.self, action: Selector? = nil) {

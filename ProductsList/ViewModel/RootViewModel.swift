@@ -6,7 +6,6 @@
 //
 
 
-import Foundation
 import UIKit
 
 protocol RootViewModelDelegate: AnyObject {
@@ -15,17 +14,7 @@ protocol RootViewModelDelegate: AnyObject {
 }
 
 class RootViewModel {
-    //    weak var delegate: NewsViewModelDelegate?
     var productsService: ProductsServiceProtocol
-    //    var imageLoader: ImageLoaderProtocol
-    //    var news = News()
-    //    init(delegate: NewsViewModelDelegate? = nil, newsServiceProtocol: NewsServiceProtocol, news: News = News(), imageLoader: ImageLoaderProtocol = AsyncImageView()) {
-    //        self.delegate = delegate
-    //        self.newsServiceProtocol = newsServiceProtocol
-    //        self.news = news
-    //        self.imageLoader = imageLoader
-    //    }
-
     var products = Products()
     weak var delegate: RootViewModelDelegate?
     static var currentSkipProductCount = 0
