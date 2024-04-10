@@ -19,7 +19,6 @@ class MockPersistentStoreContainer: NSPersistentContainer {
         self.persistentStoreDescriptions = [description]
         [self.loadPersistentStores(completionHandler: { (persistentStore, error) in
             if (error as NSError?) != nil {
-                NSLog("error")
             }
         })]
     }

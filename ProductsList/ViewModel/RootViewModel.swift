@@ -35,7 +35,6 @@ class RootViewModel {
             case .success(let fetchedProducts):
                 self?.products = fetchedProducts
                 RootViewModel.currentSkipProductCount = RootViewModel.currentSkipProductCount + 10
-             //   print("self.products is \(String(describing: self?.products))")
                 self?.delegate?.fetchProducts(self?.products)
             case .failure(let error):
                 print(error)

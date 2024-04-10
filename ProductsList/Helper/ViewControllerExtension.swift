@@ -19,7 +19,6 @@ extension UIViewController {
     }
 
     @objc func didTapEditButton(sender: AnyObject) {
-            print("hjxdbsdhjbv")
         guard let cartVC = self.storyboard?.instantiateViewController(identifier: "CartTableViewController") as? CartTableViewController else { return }
         self.navigationController?.pushViewController(cartVC, animated: true)
         }

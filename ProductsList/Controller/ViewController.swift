@@ -83,8 +83,6 @@ extension ViewController: RootViewModelDelegate {
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("article clount is ")
-        print(products?.productList?.count ?? 0)
         return products?.productList?.count ?? 0
     }
 
@@ -130,11 +128,7 @@ extension ViewController: UITableViewDelegate {
        let lastRowIndex = tableView.numberOfRows(inSection: lastSectionIndex) - 1
        if indexPath.section ==  lastSectionIndex && indexPath.row == lastRowIndex {
            if !fetchingMore && self.products?.productList?.count ?? 0 <= self.limit {
-               print("self.limit is \(self.limit)")
-               print("self.products?.products?.count ?? 0 is \(self.products?.productList?.count ?? 0)")
                beginBatchFetch()
-
-               // print("this is the last cell")
                let spinner = UIActivityIndicatorView(style: .medium)
                spinner.startAnimating()
                spinner.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: tableView.bounds.width, height: CGFloat(44))
@@ -147,7 +141,6 @@ extension ViewController: UITableViewDelegate {
 
    func beginBatchFetch() {
            self.fetchingMore = true
-           print("beginBatchFetch!")
            self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
            self.viewModel.fetchProducts()

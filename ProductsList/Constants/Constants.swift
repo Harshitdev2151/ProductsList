@@ -7,15 +7,6 @@
 
 import Foundation
 
-class Constants {
-    enum API {
-        static let productURL = "https://dummyjson.com/products/"
-    }
+struct Constants {
     
-    enum ViewControllers {
-        static let productCartViewController = "ProductCartViewController"
-        static let productTableViewCell = "ProductTableViewCell"
-        static let productCartTableViewCell = "ProductCartTableViewCell"
-        static let productSegueIdentifier = "showProductDetails"
-    }
 }

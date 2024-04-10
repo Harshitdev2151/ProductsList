@@ -36,6 +36,7 @@
 		EEBC69602BBEE9CC00436157 /* ProductsCoreDataInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBC695F2BBEE9CC00436157 /* ProductsCoreDataInteractorTests.swift */; };
 		EEBC69622BBEEE5E00436157 /* DetailViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBC69612BBEEE5E00436157 /* DetailViewControllerTests.swift */; };
 		EEBC69642BBEFAD600436157 /* CartTableViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBC69632BBEFAD600436157 /* CartTableViewControllerTests.swift */; };
+		EEDFBCB42BC6FF1900836977 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDFBCB32BC6FF1900836977 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		EEBC695F2BBEE9CC00436157 /* ProductsCoreDataInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsCoreDataInteractorTests.swift; sourceTree = "<group>"; };
 		EEBC69612BBEEE5E00436157 /* DetailViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewControllerTests.swift; sourceTree = "<group>"; };
 		EEBC69632BBEFAD600436157 /* CartTableViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTableViewControllerTests.swift; sourceTree = "<group>"; };
+		EEDFBCB32BC6FF1900836977 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 		EE171D0F2BBB35D80003029E /* ProductsList */ = {
 			isa = PBXGroup;
 			children = (
+				EEDFBCB22BC6FF1900836977 /* Constants */,
 				EE171D4C2BBB36880003029E /* Controller */,
 				EE171D4B2BBB367C0003029E /* ViewModel */,
 				EE171D4A2BBB36750003029E /* Model */,
@@ -233,6 +236,14 @@
 				EE46AC892BBC2F9200581403 /* CartTableViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		EEDFBCB22BC6FF1900836977 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				EEDFBCB32BC6FF1900836977 /* Constants.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -383,6 +394,7 @@
 				EE171D112BBB35D80003029E /* AppDelegate.swift in Sources */,
 				EE815C062BBBBCD3008B3E48 /* RootViewModel.swift in Sources */,
 				EE171D132BBB35D80003029E /* SceneDelegate.swift in Sources */,
+				EEDFBCB42BC6FF1900836977 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
