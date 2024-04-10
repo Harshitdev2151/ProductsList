@@ -8,6 +8,9 @@
 import Foundation
 
 protocol ProductsServiceProtocol {
+   /**
+    Protocol to fetch Products detail from server and return the products/ error based on condition
+    */
      func fetchProducts(_ currentSkipProductCount: Int, completion: @escaping (Result<Products, NetworkError>) -> Void)
 }
 
@@ -18,6 +21,11 @@ enum NetworkError: Error {
 }
 
 class ProductsService: ProductsServiceProtocol {
+    
+    /// Metod to fetch products detail from remote server
+    /// - Parameters:
+    ///   - currentSkipProductCount: for paination to load 10 set of data in one count
+    ///   - completion: completion handler to return products/ error to callin class
     func fetchProducts(_ currentSkipProductCount: Int = 10, completion: @escaping (Result<Products, NetworkError>) -> Void) {
         let urlString = "\(EndPointURLs.productsServiceURL)\(currentSkipProductCount)"
 

@@ -13,6 +13,10 @@ enum ServerError: Error {
 class AsyncImageView: ImageLoaderProtocol {
     private var currentUrl: String? // Get a hold of the latest request url
     private var imageCache = NSCache<NSString, UIImage>()
+    /// Fetch and save imae in Cache
+    /// - Parameters:
+    ///   - url: url of Imae
+    ///   - completion: Image donloaded from remote server/ default image
     func fetchImage(_ url: String, completion: @escaping (UIImage?) -> Void) {
         currentUrl = url
         if (imageCache.object(forKey: url as NSString) != nil) {
