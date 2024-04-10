@@ -25,20 +25,14 @@ class CartTableViewController: UITableViewController {
         self.title = "CartView"
 
         self.viewModel = RootViewModel(productsService: ProductsService(), imageLoader: self.imageLoader)
-        
+
         self.employeeCoreDataInteractor = ProductsCoreDataInteractor(withContext: self.context)
 
-        
+
         if let products = self.employeeCoreDataInteractor.fetchAllProductAddedToCart() {
             self.products = products
             self.tableView.reloadData()
         }
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -52,9 +46,6 @@ class CartTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return products.count
     }
-
-    
-
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductsTableViewCell", for: indexPath) as? ProductsTableViewCell

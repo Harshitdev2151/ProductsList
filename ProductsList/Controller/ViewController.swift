@@ -11,6 +11,7 @@ import CoreData
 class ViewController: UIViewController {
 
     var viewModel: RootViewModel!
+    
     @IBOutlet weak var tableView: UITableView!
     var products: Products?
     var fetchingMore = false
