@@ -58,11 +58,11 @@ class ViewController: UIViewController {
 
 extension ViewController: RootViewModelDelegate {
     func fetchProducts(_ products: Products?) {
-        if self.products?.products == nil {
+        if self.products?.productList == nil {
             self.products = products
             self.limit = (self.products?.total ?? 0) - (self.products?.limit ?? 0)
         } else {
-            self.products?.products?.append(contentsOf: products?.products ?? [Product()])
+            self.products?.productList?.append(contentsOf: products?.productList ?? [Product()])
         }
         DispatchQueue.main.async { [weak self] in
             self?.errorButton.isHidden = true
@@ -84,13 +84,13 @@ extension ViewController: RootViewModelDelegate {
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("article clount is ")
-        print(products?.products?.count ?? 0)
-        return products?.products?.count ?? 0
+        print(products?.productList?.count ?? 0)
+        return products?.productList?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductsTableViewCell", for: indexPath) as? ProductsTableViewCell
-        let product = self.products?.products?[indexPath.row] ?? Product()
+        let product = self.products?.productList?[indexPath.row] ?? Product()
         cell?.configureWith(product)
         viewModel.fetchImage(product.thumbnail ?? EndPointURLs.defaultImageURL) { img in
             cell?.setImage(img ?? UIImage(named: "flower123"))
@@ -107,7 +107,7 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let product = self.products?.products?[indexPath.row] ?? Product()
+        let product = self.products?.productList?[indexPath.row] ?? Product()
         self.performSegue(withIdentifier: "detailVC", sender: product)
     }
 
@@ -129,9 +129,9 @@ extension ViewController: UITableViewDelegate {
        let lastSectionIndex = tableView.numberOfSections - 1
        let lastRowIndex = tableView.numberOfRows(inSection: lastSectionIndex) - 1
        if indexPath.section ==  lastSectionIndex && indexPath.row == lastRowIndex {
-           if !fetchingMore && self.products?.products?.count ?? 0 <= self.limit {
+           if !fetchingMore && self.products?.productList?.count ?? 0 <= self.limit {
                print("self.limit is \(self.limit)")
-               print("self.products?.products?.count ?? 0 is \(self.products?.products?.count ?? 0)")
+               print("self.products?.products?.count ?? 0 is \(self.products?.productList?.count ?? 0)")
                beginBatchFetch()
 
                // print("this is the last cell")

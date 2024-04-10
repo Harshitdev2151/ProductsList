@@ -36,7 +36,7 @@ class ProductsService: ProductsServiceProtocol {
             }
             do {
                 let products = try JSONDecoder().decode(Products.self, from: newData)
-                if products.products != nil {
+                if products.productList != nil {
                     completion(.success(products))
                 } else {
                     completion(.failure(.requestFailed))

@@ -8,7 +8,7 @@
 import Foundation
 
 struct Products: Codable {
-    var products: [Product]?
+    var productList: [Product]?
     var total: Int?
     var skip: Int?
     var limit: Int?
