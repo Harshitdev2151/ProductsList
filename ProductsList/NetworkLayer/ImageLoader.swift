@@ -28,10 +28,10 @@ class AsyncImageView: ImageLoaderProtocol {
                             completion(downloadedImage)
 
                     } else {
-                        completion(UIImage(named: "flower"))
+                        completion(UIImage(named: Constants.defaultLoaderImage))
                     }
                 } else {
-                    completion(UIImage(named: "flower"))
+                    completion(UIImage(named: Constants.defaultLoaderImage))
                 }
             })
             task.resume()

@@ -8,5 +8,9 @@
 import Foundation
 
 struct Constants {
-    
+
+    static let rootVCTitle = "Product"
+    static let productsTableViewCell = "ProductsTableViewCell"
+    static let defaultLoaderImage = "defaultLoaderImage"
+
 }

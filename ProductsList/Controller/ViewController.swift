@@ -38,7 +38,7 @@ class ViewController: UIViewController {
         activityIndicatorView.startAnimating()
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 400
-        self.title = "Product"
+        self.title = Constants.rootVCTitle
         self.viewModel = RootViewModel(productsService: self.productsService, delegate: self)
         self.viewModel.fetchProducts()
     }
@@ -87,11 +87,11 @@ extension ViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductsTableViewCell", for: indexPath) as? ProductsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productsTableViewCell, for: indexPath) as? ProductsTableViewCell
         let product = self.products?.productList?[indexPath.row] ?? Product()
         cell?.configureWith(product)
         viewModel.fetchImage(product.thumbnail ?? EndPointURLs.defaultImageURL) { img in
-            cell?.setImage(img ?? UIImage(named: "flower123"))
+            cell?.setImage(img ?? UIImage(named: Constants.defaultLoaderImage))
         }
         return cell ?? UITableViewCell()
     }
