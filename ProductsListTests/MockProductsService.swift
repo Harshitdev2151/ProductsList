@@ -24,7 +24,7 @@ class MockProductsService: ProductsServiceProtocol {
 
 
      var products: Products {
-        return Products(products: [Product(title: "Black Motorbike",
+         return Products(productList: [Product(title: "Black Motorbike",
                                            description: "Engine Type:Wet sump, Single Cylinder, Four Stroke, Two Valves, Air Cooled with SOHC (Single Over Head Cam) Chain Drive Bore & Stroke:47.0 x 49.5 MM")])
     }
 

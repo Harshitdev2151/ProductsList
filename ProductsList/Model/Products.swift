@@ -5,6 +5,11 @@
 //  Created by Harshit Kumar on 02/04/24.
 //
 
+
+/**
+ Model struct to parse data recieved from server
+ This will automatically parse the data, jsut have to give the require key withh exact name
+ */
 struct Products: Codable {
     var productList: [Product]?
     var total: Int?

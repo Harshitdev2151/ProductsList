@@ -21,8 +21,8 @@ final class CartTableViewControllerTests: XCTestCase {
         sut = storyboard.instantiateViewController(identifier: "CartTableViewController") as CartTableViewController
         let persistentStore = MockPersistentStoreContainer.init()
         sut.context = persistentStore.newBackgroundContext()
-        sut.employeeCoreDataInteractor = ProductsCoreDataInteractor.init(withContext: sut.context)
-        sut.employeeCoreDataInteractor?.saveData(products.products?[0] ?? Product())
+        sut.productsCoreDataInteractor = ProductsCoreDataHelper.init(withContext: sut.context)
+        sut.productsCoreDataInteractor?.saveData(products.productList?[0] ?? Product())
         sut.loadViewIfNeeded()
     }
 
@@ -47,7 +47,7 @@ final class CartTableViewControllerTests: XCTestCase {
 
 
     var products: Products {
-       return Products(products: [Product(title: "Black Motorbike",
+        return Products(productList: [Product(title: "Black Motorbike",
                                           description: "Engine Type:Wet sump, Single Cylinder, Four Stroke, Two Valves, Air Cooled with SOHC (Single Over Head Cam) Chain Drive Bore & Stroke:47.0 x 49.5 MM")])
    }
 

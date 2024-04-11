@@ -11,7 +11,7 @@ import CoreData
 extension ProductItem {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ProductItem> {
-        return NSFetchRequest<ProductItem>(entityName: "ProductItem")
+        return NSFetchRequest<ProductItem>(entityName: Constants.productItemEntity)
     }
 
     @NSManaged public var category: String?

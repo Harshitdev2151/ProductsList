@@ -7,17 +7,11 @@
 
 import Foundation
 
+/**
+ Protocol to fetch Products detail from server and return the products/ error based on condition
+ */
 protocol ProductsServiceProtocol {
-   /**
-    Protocol to fetch Products detail from server and return the products/ error based on condition
-    */
      func fetchProducts(_ currentSkipProductCount: Int, completion: @escaping (Result<Products, NetworkError>) -> Void)
-}
-
-enum NetworkError: Error {
-    case invalidURL
-    case requestFailed
-    // Other possible errors
 }
 
 class ProductsService: ProductsServiceProtocol {

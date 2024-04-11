@@ -25,12 +25,12 @@ class MockPersistentStoreContainer: NSPersistentContainer {
 }
 class ProductsCoreDataInteractorTests: XCTestCase {
 
-    var productsCoreDataInteractor: ProductsCoreDataInteractor?
+    var productsCoreDataInteractor: ProductsCoreDataHelper?
     var context: NSManagedObjectContext?
     override func setUpWithError() throws {
         let persistentStore = MockPersistentStoreContainer.init()
         self.context = persistentStore.newBackgroundContext()
-        self.productsCoreDataInteractor = ProductsCoreDataInteractor.init(withContext: self.context!)
+        self.productsCoreDataInteractor = ProductsCoreDataHelper.init(withContext: self.context!)
     }
 override func tearDownWithError() throws {
         self.context = nil

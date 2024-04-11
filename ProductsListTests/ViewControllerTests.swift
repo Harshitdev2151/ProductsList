@@ -38,7 +38,7 @@ final class ViewControllerTests: XCTestCase {
 
         DispatchQueue.main.async {
             XCTAssertNotNil(self.sut.products)
-            XCTAssertEqual(self.sut.products?.products?.count, 1)
+            XCTAssertEqual(self.sut.products?.productList?.count, 1)
             myExpectation.fulfill()
         }
         self.wait(for: [myExpectation], timeout: 5)
@@ -68,7 +68,7 @@ final class ViewControllerTests: XCTestCase {
 
     func testNumberOfRows() {
         let numberOfRows =  sut.tableView(sut.tableView, numberOfRowsInSection: 0)
-        XCTAssertEqual(numberOfRows, sut.products?.products?.count)
+        XCTAssertEqual(numberOfRows, sut.products?.productList?.count)
     }
 
     func testDidSelectRow() {
@@ -80,7 +80,7 @@ final class ViewControllerTests: XCTestCase {
         sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
         if let detailVC = sut.calledSegue.destination as? DetailViewController {
             detailVC.loadViewIfNeeded()
-            detailVC.product = sut.products?.products?[0]
+            detailVC.product = sut.products?.productList?[0]
             XCTAssertNotNil(detailVC.titleLabel.text)
             XCTAssertNotNil(detailVC.descLbl.text)
         }

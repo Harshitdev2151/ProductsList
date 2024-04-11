@@ -23,9 +23,9 @@ class ProductsTableViewCell: UITableViewCell {
 
     func configureWithDatabaseObject(_ product: NSManagedObject) {
 
-        title.text = product.value(forKeyPath: "title") as? String
-        desc.text = product.value(forKeyPath: "desc") as? String
-        category.text = product.value(forKeyPath: "category") as? String
+        title.text = product.value(forKeyPath: Constants.titleString) as? String
+        desc.text = product.value(forKeyPath: Constants.descString) as? String
+        category.text = product.value(forKeyPath: Constants.categoryString) as? String
     }
 
     func setImage(_ img: UIImage?) {

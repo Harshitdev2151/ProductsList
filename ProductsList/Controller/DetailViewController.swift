@@ -20,20 +20,16 @@ class DetailViewController: UIViewController {
 
     var viewModel: RootViewModel = RootViewModel(productsService: ProductsService())
     var product: Product?
-    var currentCount: Int = 0
 
-    let urlString = EndPointURLs.defaultImageURL
+    private let urlString = EndPointURLs.defaultImageURL
     var imageLoader: ImageLoaderProtocol = AsyncImageView()
-
-    var employeeCoreDataInteractor: ProductsCoreDataInteractor!
+    var productsCoreDataHelper: ProductsCoreDataHelper!
     var context : NSManagedObjectContext!
-
-
     @IBOutlet weak var cartBtn: UIButton!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeLabel()
-
         self.title = Constants.detailVCTitle
         self.viewModel = RootViewModel(productsService: ProductsService(), imageLoader: self.imageLoader)
 
@@ -43,22 +39,20 @@ class DetailViewController: UIViewController {
                     self.productImgView.image = image
                 }
             }
-
-
-
         }
-
-        // Do any additional setup after loading the view.
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.employeeCoreDataInteractor = ProductsCoreDataInteractor(withContext: self.context)
-        self.setRightNavigationItem(employeeCoreDataInteractor: self.employeeCoreDataInteractor)
+        self.productsCoreDataHelper = ProductsCoreDataHelper(withContext: self.context)
+        self.setRightNavigationItem(employeeCoreDataInteractor: self.productsCoreDataHelper)
         cartBtn.setTitle(Constants.addToCartConstant, for: .normal)
     }
+}
 
-
+extension DetailViewController {
+    
+    /// Iniitial set up for all Label with the data coming from previous Controller
     func initializeLabel() {
         self.titleLabel.text = self.product?.title
         self.descLbl.text = self.product?.description
@@ -69,17 +63,19 @@ class DetailViewController: UIViewController {
         self.categoryLbl.text = self.product?.category
     }
 
-
+    
+    /// Add to cart click funcionality when customer want to add product to shoppin list
+    /// - Parameter sender: sender description
     @IBAction func addToCart(_ sender: Any) {
         if cartBtn.titleLabel?.text == Constants.addToCartConstant {
-            self.employeeCoreDataInteractor.saveData(self.product ?? Product())
-            self.setRightNavigationItem(employeeCoreDataInteractor: self.employeeCoreDataInteractor)
+            self.productsCoreDataHelper.saveData(self.product ?? Product())
+            self.setRightNavigationItem(employeeCoreDataInteractor: self.productsCoreDataHelper)
             cartBtn.setTitle(Constants.goToCartConstant, for: .normal)
 
 
         } else {
             guard let cartVC = self.storyboard?.instantiateViewController(identifier: Constants.cartTableViewController) as? CartTableViewController else { return }
-            
+
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
               return
             }

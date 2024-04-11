@@ -10,8 +10,11 @@ import CoreData
 
 class ViewController: UIViewController {
 
-    var viewModel: RootViewModel!
-    
+    lazy var viewModel : RootViewModel = {
+        let  viewModel = RootViewModel(productsService: self.productsService, delegate: self)
+        return viewModel
+    }()
+
     @IBOutlet weak var tableView: UITableView!
     var products: Products?
     var fetchingMore = false
@@ -20,19 +23,13 @@ class ViewController: UIViewController {
     open var calledSegue: UIStoryboardSegue!
 
     var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-    var employeeCoreDataInteractor: ProductsCoreDataInteractor?
+    var productsCoreDataHelper: ProductsCoreDataHelper?
 
-    
+
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
 
     @IBOutlet weak var errorButton: UIButton!
-    
-    @IBAction func pressErrorBtn(_ sender: Any) {
-        activityIndicatorView.startAnimating()
 
-        self.viewModel.fetchProducts()
-
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -40,23 +37,23 @@ class ViewController: UIViewController {
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 400
         self.title = Constants.rootVCTitle
-        self.viewModel = RootViewModel(productsService: self.productsService, delegate: self)
         self.viewModel.fetchProducts()
     }
 
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.employeeCoreDataInteractor = ProductsCoreDataInteractor(withContext: self.context)
+        self.productsCoreDataHelper = ProductsCoreDataHelper(withContext: self.context)
 
-        guard let employeeCoreDataInteractor = self.employeeCoreDataInteractor else { return  }
+        guard let employeeCoreDataInteractor = self.productsCoreDataHelper else { return  }
 
         self.setRightNavigationItem(employeeCoreDataInteractor: employeeCoreDataInteractor)
     }
 
 }
 
-
+/**
+ helper delegate to handle success/ failure API response
+ */
 extension ViewController: RootViewModelDelegate {
     func fetchProducts(_ products: Products?) {
         if self.products?.productList == nil {
@@ -82,6 +79,9 @@ extension ViewController: RootViewModelDelegate {
     }
 }
 
+/**
+ Tableview datasource
+ */
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return products?.productList?.count ?? 0
@@ -98,12 +98,13 @@ extension ViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-         // return 400
         return UITableView.automaticDimension
     }
-
 }
 
+/**
+ Tableview delegate
+ */
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let product = self.products?.productList?[indexPath.row] ?? Product()
@@ -114,9 +115,9 @@ extension ViewController: UITableViewDelegate {
         if let destinationVC = segue.destination as? DetailViewController, let product = sender as? Product {
             calledSegue = segue
             destinationVC.product = product
-            
+
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-              return
+                return
             }
             destinationVC.context = appDelegate.persistentContainer.viewContext
             //destinationVC.viewModel = self.viewModel
@@ -125,31 +126,18 @@ extension ViewController: UITableViewDelegate {
 
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-       let lastSectionIndex = tableView.numberOfSections - 1
-       let lastRowIndex = tableView.numberOfRows(inSection: lastSectionIndex) - 1
-       if indexPath.section ==  lastSectionIndex && indexPath.row == lastRowIndex {
-           if !fetchingMore && self.products?.productList?.count ?? 0 <= self.limit {
-               beginBatchFetch()
-               let spinner = UIActivityIndicatorView(style: .medium)
-               spinner.startAnimating()
-               spinner.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: tableView.bounds.width, height: CGFloat(44))
+        let lastSectionIndex = tableView.numberOfSections - 1
+        let lastRowIndex = tableView.numberOfRows(inSection: lastSectionIndex) - 1
+        if indexPath.section ==  lastSectionIndex && indexPath.row == lastRowIndex {
+            if !fetchingMore && self.products?.productList?.count ?? 0 <= self.limit {
+                beginBatchFetch()
+                let spinner = UIActivityIndicatorView(style: .medium)
+                spinner.startAnimating()
+                spinner.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: tableView.bounds.width, height: CGFloat(44))
 
-               self.tableView.tableFooterView = spinner
-               self.tableView.tableFooterView?.isHidden = false
-           }
-       }
-   }
-
-   func beginBatchFetch() {
-           self.fetchingMore = true
-           self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
-       DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-           self.viewModel.fetchProducts()
-
-       })
-
-   }
-
+                self.tableView.tableFooterView = spinner
+                self.tableView.tableFooterView?.isHidden = false
+            }
+        }
+    }
 }
-
-

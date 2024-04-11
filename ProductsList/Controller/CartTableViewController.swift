@@ -11,30 +11,21 @@ import CoreData
 class CartTableViewController: UITableViewController {
 
     var products = [NSManagedObject]()
-
-    var employeeCoreDataInteractor: ProductsCoreDataInteractor!
-
+    var productsCoreDataInteractor: ProductsCoreDataHelper!
     var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-
-    var viewModel: RootViewModel = RootViewModel(productsService: ProductsService())
-    var imageLoader: ImageLoaderProtocol = AsyncImageView()
+    lazy var viewModel : RootViewModel = {
+        let  viewModel = RootViewModel(productsService: ProductsService(), imageLoader: self.imageLoader)
+        return viewModel
+    }()
+    private var imageLoader: ImageLoaderProtocol = AsyncImageView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = Constants.cartViewTitle
-        self.viewModel = RootViewModel(productsService: ProductsService(), imageLoader: self.imageLoader)
-
-        self.employeeCoreDataInteractor = ProductsCoreDataInteractor(withContext: self.context)
-
-
-        if let products = self.employeeCoreDataInteractor.fetchAllProductAddedToCart() {
-            self.products = products
-            self.tableView.reloadData()
-        }
+        loadDatafromDB()
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -49,10 +40,22 @@ class CartTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productsTableViewCellIdentifier, for: indexPath) as? ProductsTableViewCell
         let product = self.products[indexPath.row]
         cell?.configureWithDatabaseObject(product)
-        self.viewModel.fetchImage(product.value(forKeyPath: "thumbnail") as? String ?? EndPointURLs.defaultImageURL) { img in
+        self.viewModel.fetchImage(product.value(forKeyPath: Constants.thumbnailString) as? String ?? EndPointURLs.defaultImageURL) { img in
             cell?.setImage(img ?? UIImage(named: Constants.defaultLoaderImage))
         }
         return cell ?? UITableViewCell()
     }
+}
 
+extension CartTableViewController {
+
+    /// Function to fetch all stored data from DB
+    func loadDatafromDB() {
+        self.productsCoreDataInteractor = ProductsCoreDataHelper(withContext: self.context)
+
+        if let products = self.productsCoreDataInteractor.fetchAllProductAddedToCart() {
+            self.products = products
+            self.tableView.reloadData()
+        }
+    }
 }

@@ -37,6 +37,8 @@
 		EEBC69622BBEEE5E00436157 /* DetailViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBC69612BBEEE5E00436157 /* DetailViewControllerTests.swift */; };
 		EEBC69642BBEFAD600436157 /* CartTableViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBC69632BBEFAD600436157 /* CartTableViewControllerTests.swift */; };
 		EEDFBCB42BC6FF1900836977 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDFBCB32BC6FF1900836977 /* Constants.swift */; };
+		EEDFBCB62BC7E90900836977 /* ServerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDFBCB52BC7E90900836977 /* ServerError.swift */; };
+		EEDFBCB82BC7EA6300836977 /* ViewControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDFBCB72BC7EA6300836977 /* ViewControllerHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,8 @@
 		EEBC69612BBEEE5E00436157 /* DetailViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewControllerTests.swift; sourceTree = "<group>"; };
 		EEBC69632BBEFAD600436157 /* CartTableViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTableViewControllerTests.swift; sourceTree = "<group>"; };
 		EEDFBCB32BC6FF1900836977 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		EEDFBCB52BC7E90900836977 /* ServerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerError.swift; sourceTree = "<group>"; };
+		EEDFBCB72BC7EA6300836977 /* ViewControllerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +201,7 @@
 				EE46AC8B2BBC350100581403 /* CoreDataHelper.swift */,
 				EE46AC8D2BBC36A900581403 /* ViewControllerExtension.swift */,
 				EE46AC952BBE8C0300581403 /* UIBarButtonItem+Badge.swift */,
+				EEDFBCB52BC7E90900836977 /* ServerError.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -234,6 +239,7 @@
 				EE171D142BBB35D80003029E /* ViewController.swift */,
 				EE815C092BBC034A008B3E48 /* DetailViewController.swift */,
 				EE46AC892BBC2F9200581403 /* CartTableViewController.swift */,
+				EEDFBCB72BC7EA6300836977 /* ViewControllerHelper.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -377,6 +383,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEDFBCB82BC7EA6300836977 /* ViewControllerHelper.swift in Sources */,
 				EE46AC8C2BBC350100581403 /* CoreDataHelper.swift in Sources */,
 				EE815C0A2BBC034A008B3E48 /* DetailViewController.swift in Sources */,
 				EE71C8F02BC6763000B54B27 /* ProductItem+CoreDataProperties.swift in Sources */,
@@ -392,6 +399,7 @@
 				EE71C8F12BC6763000B54B27 /* ProductItem+CoreDataClass.swift in Sources */,
 				EE171D462BBB36110003029E /* ImageLoader.swift in Sources */,
 				EE171D112BBB35D80003029E /* AppDelegate.swift in Sources */,
+				EEDFBCB62BC7E90900836977 /* ServerError.swift in Sources */,
 				EE815C062BBBBCD3008B3E48 /* RootViewModel.swift in Sources */,
 				EE171D132BBB35D80003029E /* SceneDelegate.swift in Sources */,
 				EEDFBCB42BC6FF1900836977 /* Constants.swift in Sources */,

@@ -1,14 +1,15 @@
 
 import UIKit
 
+
 protocol ImageLoaderProtocol {
+    /// Protocol declaration to fetch image
+    /// - Parameters:
+    ///   - url: url  for image
+    ///   - completion: completion handler for image
     func fetchImage(_ url: String, completion: @escaping (UIImage?) -> Void)
 }
-enum ServerError: Error {
-    case unsupportedURL
-    case incorrectImageFormat
-    case incorrectResponse
-}
+
 
 class AsyncImageView: ImageLoaderProtocol {
     private var currentUrl: String? // Get a hold of the latest request url
@@ -22,11 +23,12 @@ class AsyncImageView: ImageLoaderProtocol {
         if (imageCache.object(forKey: url as NSString) != nil) {
             completion(imageCache.object(forKey: url as NSString))
         } else {
-            let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
-            let task = session.dataTask(with: NSURL(string: url)! as URL, completionHandler: { (data, _ , error) in
-                //Backround thread downlaoding
-                DispatchQueue.global().async {
+            //background thhread
+            DispatchQueue.global().async {
+                let sessionConfig = URLSessionConfiguration.default
+                let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+                let task = session.dataTask(with: NSURL(string: url)! as URL, completionHandler: { (data, _ , error) in
+                    //Backround thread downlaoding
                     if error == nil {
                         if let data = data, let downloadedImage = UIImage(data: data) {
                             self.imageCache.setObject(downloadedImage, forKey: url as NSString)
@@ -38,9 +40,10 @@ class AsyncImageView: ImageLoaderProtocol {
                     } else {
                         completion(UIImage(named: Constants.defaultLoaderImage))
                     }
-                }
-            })
-            task.resume()
+
+                })
+                task.resume()
+            }
         }
     }
 }

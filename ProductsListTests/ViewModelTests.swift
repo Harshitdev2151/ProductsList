@@ -36,7 +36,7 @@ final class ViewModelTests: XCTestCase {
         rootViewModel.fetchProducts()
         myExpectation.fulfill()
 
-        XCTAssertEqual(rootViewModel.products.products?.count, 1)
+        XCTAssertEqual(rootViewModel.products.productList?.count, 1)
         self.wait(for: [myExpectation], timeout: 5)
     }
 
@@ -47,7 +47,7 @@ final class ViewModelTests: XCTestCase {
         rootViewModel.fetchProducts()
         myExpectation.fulfill()
 
-        XCTAssertNil(rootViewModel.products.products)
+        XCTAssertNil(rootViewModel.products.productList)
         self.wait(for: [myExpectation], timeout: 5)
     }
 
