@@ -34,7 +34,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         initializeLabel()
 
-        self.title = "ProductDetail"
+        self.title = Constants.detailVCTitle
         self.viewModel = RootViewModel(productsService: ProductsService(), imageLoader: self.imageLoader)
 
         viewModel.fetchImage(product?.thumbnail ?? EndPointURLs.defaultImageURL) { img in
@@ -55,7 +55,7 @@ class DetailViewController: UIViewController {
         super.viewWillAppear(animated)
         self.employeeCoreDataInteractor = ProductsCoreDataInteractor(withContext: self.context)
         self.setRightNavigationItem(employeeCoreDataInteractor: self.employeeCoreDataInteractor)
-        cartBtn.setTitle("Add to cart", for: .normal)
+        cartBtn.setTitle(Constants.addToCartConstant, for: .normal)
     }
 
 
@@ -71,14 +71,14 @@ class DetailViewController: UIViewController {
 
 
     @IBAction func addToCart(_ sender: Any) {
-        if cartBtn.titleLabel?.text == "Add to cart" {
+        if cartBtn.titleLabel?.text == Constants.addToCartConstant {
             self.employeeCoreDataInteractor.saveData(self.product ?? Product())
             self.setRightNavigationItem(employeeCoreDataInteractor: self.employeeCoreDataInteractor)
-            cartBtn.setTitle("Go to cart", for: .normal)
+            cartBtn.setTitle(Constants.goToCartConstant, for: .normal)
 
 
         } else {
-            guard let cartVC = self.storyboard?.instantiateViewController(identifier: "CartTableViewController") as? CartTableViewController else { return }
+            guard let cartVC = self.storyboard?.instantiateViewController(identifier: Constants.cartTableViewController) as? CartTableViewController else { return }
             
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
               return

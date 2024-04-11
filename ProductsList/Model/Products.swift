@@ -5,7 +5,6 @@
 //  Created by Harshit Kumar on 02/04/24.
 //
 
-
 struct Products: Codable {
     var productList: [Product]?
     var total: Int?

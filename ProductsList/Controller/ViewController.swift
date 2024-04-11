@@ -88,7 +88,7 @@ extension ViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productsTableViewCell, for: indexPath) as? ProductsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productsTableViewCellIdentifier, for: indexPath) as? ProductsTableViewCell
         let product = self.products?.productList?[indexPath.row] ?? Product()
         cell?.configureWith(product)
         viewModel.fetchImage(product.thumbnail ?? EndPointURLs.defaultImageURL) { img in
@@ -107,7 +107,7 @@ extension ViewController: UITableViewDataSource {
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let product = self.products?.productList?[indexPath.row] ?? Product()
-        self.performSegue(withIdentifier: "detailVC", sender: product)
+        self.performSegue(withIdentifier: Constants.detailVCSegue, sender: product)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

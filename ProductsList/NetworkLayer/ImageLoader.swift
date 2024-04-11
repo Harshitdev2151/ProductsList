@@ -25,17 +25,19 @@ class AsyncImageView: ImageLoaderProtocol {
             let sessionConfig = URLSessionConfiguration.default
             let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
             let task = session.dataTask(with: NSURL(string: url)! as URL, completionHandler: { (data, _ , error) in
-                if error == nil {
-                    // DispatchQueue.main.async {
-                    if let data = data, let downloadedImage = UIImage(data: data) {
+                //Backround thread downlaoding
+                DispatchQueue.global().async {
+                    if error == nil {
+                        if let data = data, let downloadedImage = UIImage(data: data) {
                             self.imageCache.setObject(downloadedImage, forKey: url as NSString)
                             completion(downloadedImage)
-
+                        }
+                        else {
+                            completion(UIImage(named: Constants.defaultLoaderImage))
+                        }
                     } else {
                         completion(UIImage(named: Constants.defaultLoaderImage))
                     }
-                } else {
-                    completion(UIImage(named: Constants.defaultLoaderImage))
                 }
             })
             task.resume()

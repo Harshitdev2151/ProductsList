@@ -21,9 +21,7 @@ class CartTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.title = "CartView"
-
+        self.title = Constants.cartViewTitle
         self.viewModel = RootViewModel(productsService: ProductsService(), imageLoader: self.imageLoader)
 
         self.employeeCoreDataInteractor = ProductsCoreDataInteractor(withContext: self.context)
@@ -48,13 +46,12 @@ class CartTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductsTableViewCell", for: indexPath) as? ProductsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productsTableViewCellIdentifier, for: indexPath) as? ProductsTableViewCell
         let product = self.products[indexPath.row]
         cell?.configureWithDatabaseObject(product)
         self.viewModel.fetchImage(product.value(forKeyPath: "thumbnail") as? String ?? EndPointURLs.defaultImageURL) { img in
-            cell?.setImage(img ?? UIImage(named: "flower123"))
+            cell?.setImage(img ?? UIImage(named: Constants.defaultLoaderImage))
         }
-
         return cell ?? UITableViewCell()
     }
 
