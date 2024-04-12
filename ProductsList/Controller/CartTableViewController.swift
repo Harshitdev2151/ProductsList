@@ -14,7 +14,7 @@ import CoreData
 class CartTableViewController: UITableViewController {
 
     var products = [NSManagedObject]()
-    var productsCoreDataInteractor: ProductsCoreDataHelper!
+    var productsCoreDataHelper: ProductsCoreDataHelper!
     private var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     lazy var viewModel : RootViewModel = {
         let  viewModel = RootViewModel(productsService: ProductsService(), imageLoader: AsyncImageView())
@@ -53,7 +53,7 @@ extension CartTableViewController {
 
     /// Function to fetch all stored data from DB
     func loadDatafromDB() {
-        if let products = self.productsCoreDataInteractor.fetchAllProductAddedToCart() {
+        if let products = self.productsCoreDataHelper.fetchAllProductAddedToCart() {
             self.products = products
             self.tableView.reloadData()
         }

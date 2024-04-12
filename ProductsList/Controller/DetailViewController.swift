@@ -23,11 +23,9 @@ class DetailViewController: UIViewController {
 
     var viewModel: RootViewModel = RootViewModel(productsService: ProductsService(), imageLoader: AsyncImageView())
     var product: Product?
-
     private let urlString = EndPointURLs.defaultImageURL
     private var imageLoader: ImageLoaderProtocol = AsyncImageView()
     var productsCoreDataHelper: ProductsCoreDataHelper!
-    var context : NSManagedObjectContext!
     @IBOutlet weak var cartBtn: UIButton!
 
     override func viewDidLoad() {
@@ -45,7 +43,6 @@ class DetailViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.productsCoreDataHelper = ProductsCoreDataHelper(withContext: self.context)
         self.setRightNavigationItem(employeeCoreDataInteractor: self.productsCoreDataHelper)
         cartBtn.setTitle(Constants.addToCartConstant, for: .normal)
     }
@@ -80,7 +77,7 @@ extension DetailViewController {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
               return
             }
-            cartVC.productsCoreDataInteractor = ProductsCoreDataHelper(withContext: appDelegate.persistentContainer.viewContext)
+            cartVC.productsCoreDataHelper = ProductsCoreDataHelper(withContext: appDelegate.persistentContainer.viewContext)
             self.navigationController?.pushViewController(cartVC, animated: true)
         }
     }

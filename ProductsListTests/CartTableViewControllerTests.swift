@@ -20,8 +20,8 @@ final class CartTableViewControllerTests: XCTestCase {
         storyboard = UIStoryboard(name: "Main", bundle: nil)
         sut = storyboard.instantiateViewController(identifier: "CartTableViewController") as CartTableViewController
         let persistentStore = MockPersistentStoreContainer.init()
-        sut.productsCoreDataInteractor = ProductsCoreDataHelper.init(withContext: persistentStore.newBackgroundContext())
-        sut.productsCoreDataInteractor?.saveData(products.productList?[0] ?? Product())
+        sut.productsCoreDataHelper = ProductsCoreDataHelper.init(withContext: persistentStore.newBackgroundContext())
+        sut.productsCoreDataHelper?.saveData(products.productList?[0] ?? Product())
         sut.loadViewIfNeeded()
     }
 

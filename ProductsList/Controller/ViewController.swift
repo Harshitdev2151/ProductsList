@@ -121,8 +121,7 @@ extension ViewController: UITableViewDelegate {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
                 return
             }
-            destinationVC.context = appDelegate.persistentContainer.viewContext
-            //destinationVC.viewModel = self.viewModel
+            destinationVC.productsCoreDataHelper = ProductsCoreDataHelper(withContext: appDelegate.persistentContainer.viewContext)
         }
     }
 

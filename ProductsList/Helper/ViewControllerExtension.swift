@@ -24,6 +24,10 @@ extension UIViewController {
     /// - Parameter sender: sender description
     @objc func didTapEditButton(sender: AnyObject) {
         guard let cartVC = self.storyboard?.instantiateViewController(identifier: Constants.cartTableViewController) as? CartTableViewController else { return }
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+          return
+        }
+        cartVC.productsCoreDataHelper = ProductsCoreDataHelper(withContext: appDelegate.persistentContainer.viewContext)
         self.navigationController?.pushViewController(cartVC, animated: true)
         }
 }
