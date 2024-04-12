@@ -18,12 +18,12 @@ final class DetailViewControllerTests: XCTestCase {
         storyboard = UIStoryboard(name: "Main", bundle: nil)
         sut = storyboard.instantiateViewController(identifier: "DetailViewController") as DetailViewController
         sut.loadViewIfNeeded()
-        let navController = UINavigationController(rootViewController: sut)
-       // sut.viewModel = RootViewModel(productsService: mockProductsService, delegate: sut)
-
+        _ = UINavigationController(rootViewController: sut)
     }
 
     override func tearDownWithError() throws {
+        sut = nil
+        storyboard = nil
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 

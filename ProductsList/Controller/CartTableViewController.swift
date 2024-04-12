@@ -8,16 +8,18 @@
 import UIKit
 import CoreData
 
+/**
+ CartVC to shhow all product added to cart
+ */
 class CartTableViewController: UITableViewController {
 
     var products = [NSManagedObject]()
     var productsCoreDataInteractor: ProductsCoreDataHelper!
-    var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    private var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     lazy var viewModel : RootViewModel = {
-        let  viewModel = RootViewModel(productsService: ProductsService(), imageLoader: self.imageLoader)
+        let  viewModel = RootViewModel(productsService: ProductsService(), imageLoader: AsyncImageView())
         return viewModel
     }()
-    private var imageLoader: ImageLoaderProtocol = AsyncImageView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +53,6 @@ extension CartTableViewController {
 
     /// Function to fetch all stored data from DB
     func loadDatafromDB() {
-        self.productsCoreDataInteractor = ProductsCoreDataHelper(withContext: self.context)
-
         if let products = self.productsCoreDataInteractor.fetchAllProductAddedToCart() {
             self.products = products
             self.tableView.reloadData()

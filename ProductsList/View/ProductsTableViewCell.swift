@@ -8,6 +8,8 @@
 import UIKit
 import CoreData
 
+
+/// Cell in Tableview to display the required data to customer
 class ProductsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var title: UILabel!

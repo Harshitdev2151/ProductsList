@@ -32,8 +32,9 @@ class ProductsCoreDataInteractorTests: XCTestCase {
         self.context = persistentStore.newBackgroundContext()
         self.productsCoreDataInteractor = ProductsCoreDataHelper.init(withContext: self.context!)
     }
-override func tearDownWithError() throws {
+    override func tearDownWithError() throws {
         self.context = nil
+        productsCoreDataInteractor = nil
     }
 
     func testSaveData() {
@@ -51,7 +52,7 @@ override func tearDownWithError() throws {
 
     var products: Products {
         return Products(productList: [Product(title: "Black Motorbike",
-                                          description: "Engine Type:Wet sump, Single Cylinder, Four Stroke, Two Valves, Air Cooled with SOHC (Single Over Head Cam) Chain Drive Bore & Stroke:47.0 x 49.5 MM")])
-   }
+                                              description: "Engine Type:Wet sump, Single Cylinder, Four Stroke, Two Valves, Air Cooled with SOHC (Single Over Head Cam) Chain Drive Bore & Stroke:47.0 x 49.5 MM")])
+    }
 
 }

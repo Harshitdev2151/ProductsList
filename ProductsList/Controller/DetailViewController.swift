@@ -8,6 +8,9 @@
 import UIKit
 import CoreData
 
+/**
+ Detail VC of product of list of previous VC
+ */
 class DetailViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
@@ -18,11 +21,11 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var categoryLbl: UILabel!
     @IBOutlet weak var productImgView: UIImageView!
 
-    var viewModel: RootViewModel = RootViewModel(productsService: ProductsService())
+    var viewModel: RootViewModel = RootViewModel(productsService: ProductsService(), imageLoader: AsyncImageView())
     var product: Product?
 
     private let urlString = EndPointURLs.defaultImageURL
-    var imageLoader: ImageLoaderProtocol = AsyncImageView()
+    private var imageLoader: ImageLoaderProtocol = AsyncImageView()
     var productsCoreDataHelper: ProductsCoreDataHelper!
     var context : NSManagedObjectContext!
     @IBOutlet weak var cartBtn: UIButton!
@@ -31,8 +34,6 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         initializeLabel()
         self.title = Constants.detailVCTitle
-        self.viewModel = RootViewModel(productsService: ProductsService(), imageLoader: self.imageLoader)
-
         viewModel.fetchImage(product?.thumbnail ?? EndPointURLs.defaultImageURL) { img in
             DispatchQueue.main.async {
                 if let image = img {
@@ -79,7 +80,7 @@ extension DetailViewController {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
               return
             }
-            cartVC.context = appDelegate.persistentContainer.viewContext
+            cartVC.productsCoreDataInteractor = ProductsCoreDataHelper(withContext: appDelegate.persistentContainer.viewContext)
             self.navigationController?.pushViewController(cartVC, animated: true)
         }
     }

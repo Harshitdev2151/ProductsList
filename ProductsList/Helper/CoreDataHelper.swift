@@ -13,6 +13,9 @@ import UIKit
  */
 struct ProductsCoreDataHelper {
     private var context : NSManagedObjectContext
+    
+    /// Constructor with context for DI
+    /// - Parameter context: context description
     init(withContext context : NSManagedObjectContext) {
         self.context = context
     }

@@ -16,8 +16,8 @@ class AsyncImageView: ImageLoaderProtocol {
     private var imageCache = NSCache<NSString, UIImage>()
     /// Fetch and save imae in Cache
     /// - Parameters:
-    ///   - url: url of Imae
-    ///   - completion: Image donloaded from remote server/ default image
+    ///   - url: url of Image to downlaod
+    ///   - completion: Image downloaded from remote server/ default image
     func fetchImage(_ url: String, completion: @escaping (UIImage?) -> Void) {
         currentUrl = url
         if (imageCache.object(forKey: url as NSString) != nil) {

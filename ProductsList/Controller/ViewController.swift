@@ -8,6 +8,9 @@
 import UIKit
 import CoreData
 
+/**
+ Root VC / startin screen of app
+ */
 class ViewController: UIViewController {
 
     lazy var viewModel : RootViewModel = {
@@ -19,15 +22,14 @@ class ViewController: UIViewController {
     var products: Products?
     var fetchingMore = false
     var limit = 0
-    var productsService: ProductsServiceProtocol = ProductsService()
+    private var productsService: ProductsServiceProtocol = ProductsService()
     open var calledSegue: UIStoryboardSegue!
 
-    var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    private var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     var productsCoreDataHelper: ProductsCoreDataHelper?
 
 
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
-
     @IBOutlet weak var errorButton: UIButton!
 
     override func viewDidLoad() {

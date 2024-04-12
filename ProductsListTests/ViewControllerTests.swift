@@ -19,9 +19,8 @@ final class ViewControllerTests: XCTestCase {
         storyboard = UIStoryboard(name: "Main", bundle: nil)
         sut = storyboard.instantiateViewController(identifier: "ViewController") as ViewController
         mockProductsService = MockProductsService()
-        sut.productsService = mockProductsService
         sut.loadViewIfNeeded()
-       // sut.viewModel = RootViewModel(productsService: mockProductsService, delegate: sut)
+        sut.viewModel = RootViewModel(productsService: mockProductsService, delegate: sut)
 
     }
 
@@ -42,25 +41,9 @@ final class ViewControllerTests: XCTestCase {
             myExpectation.fulfill()
         }
         self.wait(for: [myExpectation], timeout: 5)
-
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
     }
 
     func testCellForRowAtIndexPath() {
-        /*
-        let myExpectation = expectation(description: "Cell shoould not be nil")
-
-        DispatchQueue.main.async {
-            let productsTableViewCell = self.sut.tableView(self.sut.tableView, cellForRowAt: IndexPath(row: 0, section: 0)) as! ProductsTableViewCell
-            XCTAssertNotNil(productsTableViewCell)
-            myExpectation.fulfill()
-        }
-        self.wait(for: [myExpectation], timeout: 5)
-*/
         let productsTableViewCell = self.sut.tableView(self.sut.tableView, cellForRowAt: IndexPath(row: 0, section: 0)) as! ProductsTableViewCell
         XCTAssertNotNil(productsTableViewCell)
 
