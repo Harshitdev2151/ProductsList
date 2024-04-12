@@ -46,7 +46,6 @@ class RootViewModel {
                 RootViewModel.currentSkipProductCount = RootViewModel.currentSkipProductCount + 10
                 self?.delegate?.fetchProducts(self?.products)
             case .failure(let error):
-                print(error)
                 self?.delegate?.showError(message: error.localizedDescription)
             }
         }

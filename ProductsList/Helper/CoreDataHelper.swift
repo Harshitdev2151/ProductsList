@@ -55,7 +55,6 @@ struct ProductsCoreDataHelper {
         do {
             try self.context.save()
         } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
         }
     }
 
@@ -72,7 +71,6 @@ struct ProductsCoreDataHelper {
             let products = try self.context.fetch(fetchRequest)
             return products
         } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
             return nil
         }
 
