@@ -91,10 +91,15 @@ extension ViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productsTableViewCellIdentifier, for: indexPath) as? ProductsTableViewCell
+        cell?.tag = indexPath.row
         let product = self.products?.productList?[indexPath.row] ?? Product()
         cell?.configureWith(product)
         viewModel.fetchImage(product.thumbnail ?? EndPointURLs.defaultImageURL) { img in
-            cell?.setImage(img ?? UIImage(named: Constants.defaultLoaderImage))
+            DispatchQueue.main.async { 
+                if(cell?.tag == indexPath.row) {
+                    cell?.setImage(img ?? UIImage(named: Constants.defaultLoaderImage))
+                }
+            }
         }
         return cell ?? UITableViewCell()
     }

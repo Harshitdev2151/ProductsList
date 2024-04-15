@@ -21,6 +21,7 @@ class ProductsTableViewCell: UITableViewCell {
         title.text = product.title
         desc.text = product.description
         category.text = product.category
+        self.productImgView.image = UIImage(named: Constants.defaultLoaderImage)
     }
 
     func configureWithDatabaseObject(_ product: NSManagedObject) {
@@ -33,8 +34,12 @@ class ProductsTableViewCell: UITableViewCell {
     func setImage(_ img: UIImage?) {
         DispatchQueue.main.async {
             self.productImgView.image = img
-            self.productImgView.reloadInputViews()
         }
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.productImgView.image = nil
     }
 
 }
