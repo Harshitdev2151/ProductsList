@@ -27,7 +27,7 @@ class ProductsService: ProductsServiceProtocol {
             completion(.failure(.invalidURL))
             return
         }
-        URLSession.shared.dataTask(with: serviceURL) { data, _, error in
+        URLSession.shared.dataTask(with: serviceURL) { data, response , error in
             if error != nil {
                 completion(.failure(.requestFailed))
                 return
@@ -36,15 +36,17 @@ class ProductsService: ProductsServiceProtocol {
                 completion(.failure(.requestFailed))
                 return
             }
-            do {
-                let products = try JSONDecoder().decode(Products.self, from: newData)
-                if products.productList != nil {
-                    completion(.success(products))
-                } else {
+            if let response = response as? HTTPURLResponse, 200...299 ~= response.statusCode, error == nil {
+                do {
+                    let products = try JSONDecoder().decode(Products.self, from: newData)
+                    if products.productList != nil {
+                        completion(.success(products))
+                    } else {
+                        completion(.failure(.requestFailed))
+                    }
+                } catch {
                     completion(.failure(.requestFailed))
                 }
-            } catch {
-                completion(.failure(.requestFailed))
             }
         }.resume()
     }

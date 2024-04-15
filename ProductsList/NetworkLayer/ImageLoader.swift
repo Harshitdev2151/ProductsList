@@ -23,13 +23,12 @@ class AsyncImageView: ImageLoaderProtocol {
         if (imageCache.object(forKey: url as NSString) != nil) {
             completion(imageCache.object(forKey: url as NSString))
         } else {
-            //background thhread
+            //background thread downlaod
             DispatchQueue.global().async {
                 let sessionConfig = URLSessionConfiguration.default
                 let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
-                let task = session.dataTask(with: NSURL(string: url)! as URL, completionHandler: { (data, _ , error) in
-                    //Backround thread downlaoding
-                    if error == nil {
+                let task = session.dataTask(with: NSURL(string: url)! as URL, completionHandler: { (data, response , error) in
+                    if let response = response as? HTTPURLResponse, 200...299 ~= response.statusCode, error == nil {
                         if let data = data, let downloadedImage = UIImage(data: data) {
                             self.imageCache.setObject(downloadedImage, forKey: url as NSString)
                             completion(downloadedImage)
@@ -47,3 +46,8 @@ class AsyncImageView: ImageLoaderProtocol {
         }
     }
 }
+
+//guard let response = response as? HTTPURLResponse, 200...299 ~= response.statusCode else {
+//    completionHandler(.failure(.invalidResponse))
+//    return
+//}
