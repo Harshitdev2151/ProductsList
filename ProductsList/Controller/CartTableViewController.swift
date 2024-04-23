@@ -8,41 +8,29 @@
 import UIKit
 import CoreData
 
+/**
+ CartVC to shhow all product added to cart
+ */
 class CartTableViewController: UITableViewController {
 
-    var products = [NSManagedObject]()
+    // MARK: - Detail ViewController Dependency Injection
+    lazy var cartViewModel : CartViewModel = {
+        let viewModel = CartViewModel(imageLoader: AsyncImageView(),
+                                      productsCoreDataHelper: self.productsCoreDataHelper)
+        return viewModel
+    }()
+    var productsCoreDataHelper: ProductsCoreDataHelper!
 
-    var employeeCoreDataInteractor: ProductsCoreDataInteractor!
+    var products = [ProductItem]()
 
-    var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-
-    var viewModel: RootViewModel = RootViewModel(productsService: ProductsService())
-    var imageLoader: ImageLoaderProtocol = AsyncImageView()
-
+    // MARK: -  CartViewController Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.title = "CartView"
-
-        self.viewModel = RootViewModel(productsService: ProductsService(), imageLoader: self.imageLoader)
-        
-        self.employeeCoreDataInteractor = ProductsCoreDataInteractor(withContext: self.context)
-
-        
-        if let products = self.employeeCoreDataInteractor.fetchAllProductAddedToCart() {
-            self.products = products
-            self.tableView.reloadData()
-        }
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.title = Constants.cartViewTitle
+        loadDatafromDB()
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -53,18 +41,24 @@ class CartTableViewController: UITableViewController {
         return products.count
     }
 
-    
-
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductsTableViewCell", for: indexPath) as? ProductsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productCartCell, for: indexPath) as? ProductCartCell
         let product = self.products[indexPath.row]
         cell?.configureWithDatabaseObject(product)
-        self.viewModel.fetchImage(product.value(forKeyPath: "thumbnail") as? String ?? EndPointURLs.defaultImageURL) { img in
-            cell?.setImage(img ?? UIImage(named: "flower123"))
+        self.cartViewModel.fetchImage(product.value(forKeyPath: Constants.thumbnailString) as? String ?? EndPointURLs.defaultImageURL) { img in
+            cell?.setImage(img ?? UIImage(named: Constants.defaultLoaderImage))
         }
-
         return cell ?? UITableViewCell()
     }
+}
 
+extension CartTableViewController {
+
+    /// Function to fetch all stored data from DB
+    func loadDatafromDB() {
+        if let products = self.cartViewModel.fetchAllProductAddedToCart() {
+            self.products = products
+            self.tableView.reloadData()
+        }
+    }
 }

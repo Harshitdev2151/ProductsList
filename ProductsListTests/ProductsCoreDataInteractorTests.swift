@@ -19,26 +19,26 @@ class MockPersistentStoreContainer: NSPersistentContainer {
         self.persistentStoreDescriptions = [description]
         [self.loadPersistentStores(completionHandler: { (persistentStore, error) in
             if (error as NSError?) != nil {
-                NSLog("error")
             }
         })]
     }
 }
 class ProductsCoreDataInteractorTests: XCTestCase {
 
-    var productsCoreDataInteractor: ProductsCoreDataInteractor?
+    var productsCoreDataInteractor: ProductsCoreDataHelper?
     var context: NSManagedObjectContext?
     override func setUpWithError() throws {
         let persistentStore = MockPersistentStoreContainer.init()
         self.context = persistentStore.newBackgroundContext()
-        self.productsCoreDataInteractor = ProductsCoreDataInteractor.init(withContext: self.context!)
+        self.productsCoreDataInteractor = ProductsCoreDataHelper.init(withContext: self.context!)
     }
-override func tearDownWithError() throws {
+    override func tearDownWithError() throws {
         self.context = nil
+        productsCoreDataInteractor = nil
     }
 
     func testSaveData() {
-        self.productsCoreDataInteractor?.saveData(products.products?[0] ?? Product())
+        self.productsCoreDataInteractor?.saveData(products.productList?[0] ?? Product())
 
         let products = self.productsCoreDataInteractor?.fetchAllProductAddedToCart()
         XCTAssertEqual(products?.count, 1)
@@ -51,8 +51,8 @@ override func tearDownWithError() throws {
 
 
     var products: Products {
-       return Products(products: [Product(title: "Black Motorbike",
-                                          description: "Engine Type:Wet sump, Single Cylinder, Four Stroke, Two Valves, Air Cooled with SOHC (Single Over Head Cam) Chain Drive Bore & Stroke:47.0 x 49.5 MM")])
-   }
+        return Products(productList: [Product(title: "Black Motorbike",
+                                              description: "Engine Type:Wet sump, Single Cylinder, Four Stroke, Two Valves, Air Cooled with SOHC (Single Over Head Cam) Chain Drive Bore & Stroke:47.0 x 49.5 MM")])
+    }
 
 }

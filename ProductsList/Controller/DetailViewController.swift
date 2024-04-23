@@ -8,8 +8,12 @@
 import UIKit
 import CoreData
 
+/**
+ Detail VC of product of list of previous VC
+ */
 class DetailViewController: UIViewController {
 
+    // MARK: - Detail ViewController IBOutlet
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descLbl: UILabel!
     @IBOutlet weak var priceLbl: UILabel!
@@ -17,85 +21,72 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var ratingLbl: UILabel!
     @IBOutlet weak var categoryLbl: UILabel!
     @IBOutlet weak var productImgView: UIImageView!
-
-    var viewModel: RootViewModel = RootViewModel(productsService: ProductsService())
-    var product: Product?
-    var currentCount: Int = 0
-
-    let urlString = EndPointURLs.defaultImageURL
-    var imageLoader: ImageLoaderProtocol = AsyncImageView()
-
-    var employeeCoreDataInteractor: ProductsCoreDataInteractor!
-    var context : NSManagedObjectContext!
-
-
+    @IBOutlet weak var rateButton: UIButton!
     @IBOutlet weak var cartBtn: UIButton!
+
+
+    // MARK: - Detail ViewController Dependency Injection
+    lazy var detailProductViewModel : DetailProductViewModel = {
+        let viewModel = DetailProductViewModel(imageLoader: AsyncImageView(),
+                                               productsCoreDataHelper: self.productsCoreDataHelper)
+        return viewModel
+    }()
+    var productsCoreDataHelper: ProductsCoreDataHelper!
+
+
+    var product: Product?
+    private let urlString = EndPointURLs.defaultImageURL
+    private var imageLoader: ImageLoaderProtocol = AsyncImageView()
+
+    // MARK: -  DetailViewController Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeLabel()
-
-        self.title = "ProductDetail"
-        self.viewModel = RootViewModel(productsService: ProductsService(), imageLoader: self.imageLoader)
-
-        viewModel.fetchImage(product?.thumbnail ?? EndPointURLs.defaultImageURL) { img in
+        self.title = Constants.detailVCTitle
+        detailProductViewModel.fetchImage(product?.thumbnail ?? EndPointURLs.defaultImageURL) { img in
             DispatchQueue.main.async {
                 if let image = img {
                     self.productImgView.image = image
                 }
             }
-
-
-
         }
-
-        // Do any additional setup after loading the view.
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.employeeCoreDataInteractor = ProductsCoreDataInteractor(withContext: self.context)
-        self.setRightNavigationItem(employeeCoreDataInteractor: self.employeeCoreDataInteractor)
-        cartBtn.setTitle("Add to cart", for: .normal)
+        self.setRightNavigationItem(productsCoreDataHelper: self.productsCoreDataHelper)
+        cartBtn.setTitle(Constants.addToCartConstant, for: .normal)
     }
+}
 
-
+extension DetailViewController {
+    /// Iniitial set up for all Label with the data coming from previous Controller
     func initializeLabel() {
         self.titleLabel.text = self.product?.title
         self.descLbl.text = self.product?.description
-        self.priceLbl.text = String(self.product?.price ?? 0)
-        self.ratingLbl.text = String(self.product?.rating ?? 0)
-
-        self.brandLbl.text = self.product?.brand
-        self.categoryLbl.text = self.product?.category
+        self.priceLbl.text = "\(Constants.priceConst)$\(String(self.product?.price ?? 0))"
+        self.ratingLbl.text = "\(Constants.ratingConst)\(String(self.product?.rating ?? 0))"
+        self.brandLbl.text = "\(Constants.brandConst)\(product?.brand ?? "") (\(product?.category ?? ""))"
+        self.categoryLbl.text = ""
+        self.rateButton.setTitle("\(product?.rating ?? 0)", for: .normal)
     }
 
-
+    /// Add to cart click funcionality when customer want to add product to shoppin list
+    /// - Parameter sender: sender description
     @IBAction func addToCart(_ sender: Any) {
-        if cartBtn.titleLabel?.text == "Add to cart" {
-            self.employeeCoreDataInteractor.saveData(self.product ?? Product())
-            self.setRightNavigationItem(employeeCoreDataInteractor: self.employeeCoreDataInteractor)
-            cartBtn.setTitle("Go to cart", for: .normal)
-
-
+        if cartBtn.titleLabel?.text == Constants.addToCartConstant {
+            _ = try? self.detailProductViewModel.updateProduct(self.product ?? Product())
+            self.addAlertController(title: Constants.prodAddSuccessTitle, message: Constants.prodAddSuccessMessage)
+            self.setRightNavigationItem(productsCoreDataHelper: self.productsCoreDataHelper)
+            cartBtn.setTitle(Constants.goToCartConstant, for: .normal)
         } else {
-            guard let cartVC = self.storyboard?.instantiateViewController(identifier: "CartTableViewController") as? CartTableViewController else { return }
-            
+            guard let cartVC = self.storyboard?.instantiateViewController(identifier: Constants.cartTableViewController) as? CartTableViewController else { return }
+
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-              return
+                return
             }
-            cartVC.context = appDelegate.persistentContainer.viewContext
+            cartVC.productsCoreDataHelper = ProductsCoreDataHelper(withContext: appDelegate.persistentContainer.viewContext)
             self.navigationController?.pushViewController(cartVC, animated: true)
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

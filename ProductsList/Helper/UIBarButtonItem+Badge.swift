@@ -7,10 +7,15 @@
 
 import UIKit
 
-import Foundation
-
 extension UIBarButtonItem {
-
+    
+    /// Bar button on Navigation bar
+    /// - Parameters:
+    ///   - icon: icon for image
+    ///   - badge: badge description
+    ///   - badgeBackgroundColor: badgeBackgroundColor description
+    ///   - target: target description
+    ///   - action: action description
     convenience init(icon: UIImage, badge: String, _ badgeBackgroundColor: UIColor = #colorLiteral(red: 0.9156965613, green: 0.380413115, blue: 0.2803866267, alpha: 1), target: Any? = UIBarButtonItem.self, action: Selector? = nil) {
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         imageView.image = icon

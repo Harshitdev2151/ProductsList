@@ -36,7 +36,7 @@ final class ViewModelTests: XCTestCase {
         rootViewModel.fetchProducts()
         myExpectation.fulfill()
 
-        XCTAssertEqual(rootViewModel.products.products?.count, 1)
+        XCTAssertEqual(rootViewModel.products.productList?.count, 1)
         self.wait(for: [myExpectation], timeout: 5)
     }
 
@@ -47,16 +47,8 @@ final class ViewModelTests: XCTestCase {
         rootViewModel.fetchProducts()
         myExpectation.fulfill()
 
-        XCTAssertNil(rootViewModel.products.products)
+        XCTAssertNil(rootViewModel.products.productList)
         self.wait(for: [myExpectation], timeout: 5)
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
     }
 
     func testPerformanceExample() throws {
