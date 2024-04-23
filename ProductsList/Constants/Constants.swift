@@ -14,6 +14,7 @@ struct Constants {
     static let cartTableViewController = "CartTableViewController"
     static let cartViewTitle = "CartView"
     static let productsTableViewCellIdentifier = "ProductsTableViewCell"
+    static let ProductCellIdentifier = "ProductCell"
     static let productsCodableKey = "products"
     static let titleString = "title"
     static let descString = "desc"

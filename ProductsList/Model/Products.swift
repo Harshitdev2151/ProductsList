@@ -23,6 +23,7 @@ struct Products: Codable {
 }
 
 struct Product: Codable {
+    var id: Int?
     var title: String?
     var description: String?
     var thumbnail: String?
@@ -30,4 +31,5 @@ struct Product: Codable {
     var rating: Double?
     var brand: String?
     var category: String?
+    var count: Int?
 }

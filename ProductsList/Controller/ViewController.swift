@@ -90,7 +90,7 @@ extension ViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productsTableViewCellIdentifier, for: indexPath) as? ProductsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ProductCellIdentifier, for: indexPath) as? ProductCell
         cell?.tag = indexPath.row
         let product = self.products?.productList?[indexPath.row] ?? Product()
         cell?.configureWith(product)

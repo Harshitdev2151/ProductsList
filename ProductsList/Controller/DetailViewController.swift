@@ -20,6 +20,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var ratingLbl: UILabel!
     @IBOutlet weak var categoryLbl: UILabel!
     @IBOutlet weak var productImgView: UIImageView!
+    @IBOutlet weak var rateButton: UIButton!
 
     lazy var detailProductViewModel : DetailProductViewModel = {
         let viewModel = DetailProductViewModel(imageLoader: AsyncImageView(),
@@ -54,18 +55,28 @@ class DetailViewController: UIViewController {
 
 extension DetailViewController {
     
+//    /// Iniitial set up for all Label with the data coming from previous Controller
+//    func initializeLabel() {
+//        self.titleLabel.text = self.product?.title
+//        self.descLbl.text = self.product?.description
+//        self.priceLbl.text = String(self.product?.price ?? 0)
+//        self.ratingLbl.text = String(self.product?.rating ?? 0)
+//
+//        self.brandLbl.text = self.product?.brand
+//        self.categoryLbl.text = self.product?.category
+//    }
+
     /// Iniitial set up for all Label with the data coming from previous Controller
     func initializeLabel() {
         self.titleLabel.text = self.product?.title
         self.descLbl.text = self.product?.description
-        self.priceLbl.text = String(self.product?.price ?? 0)
-        self.ratingLbl.text = String(self.product?.rating ?? 0)
-
-        self.brandLbl.text = self.product?.brand
-        self.categoryLbl.text = self.product?.category
+        self.priceLbl.text = "Price - $\(String(self.product?.price ?? 0))"
+        self.ratingLbl.text = "Rating - \(String(self.product?.rating ?? 0))"
+        self.brandLbl.text = "Brand - \(product?.brand ?? "") (\(product?.category ?? ""))"
+        self.categoryLbl.text = ""
+        self.rateButton.setTitle("\(product?.rating ?? 0)", for: .normal)
     }
 
-    
     /// Add to cart click funcionality when customer want to add product to shoppin list
     /// - Parameter sender: sender description
     @IBAction func addToCart(_ sender: Any) {
