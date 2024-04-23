@@ -1,6 +1,4 @@
 
-//
-
 import UIKit
 import CoreData
 
@@ -51,20 +49,5 @@ class ProductCell: UITableViewCell {
         super.prepareForReuse()
         self.productImageView.image = nil
     }
-
-
-
-//    func productDetailConfiguration() {
-//        guard let product else { return }
-//        productTitleLabel.text = product.title
-//        productCategoryLabel.text = product.category
-//        descriptionLabel.text = product.description
-//        priceLabel.text = "$\(product.price ?? 0)"
-//        rateButton.setTitle("\(product.rating ?? 0)", for: .normal)
-//        productImageView.imageFromServerURL(urlString: product.thumbnail ?? "", PlaceHolderImage: UIImage.init(named: "ImagePlaceHolder")!)
-//
-//       // productImageView.setImage(with: product.thumbnail ?? "")
-//        
-//    }
     
 }

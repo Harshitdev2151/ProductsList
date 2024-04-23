@@ -13,7 +13,7 @@ import CoreData
  */
 class CartTableViewController: UITableViewController {
 
-    var products = [NSManagedObject]()
+    var products = [ProductItem]()
     lazy var cartViewModel : CartViewModel = {
         let viewModel = CartViewModel(imageLoader: AsyncImageView(),
                                productsCoreDataHelper: self.productsCoreDataHelper)
@@ -39,7 +39,7 @@ class CartTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCartCell", for: indexPath) as? ProductCartCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productCartCell, for: indexPath) as? ProductCartCell
         let product = self.products[indexPath.row]
         cell?.configureWithDatabaseObject(product)
         self.cartViewModel.fetchImage(product.value(forKeyPath: Constants.thumbnailString) as? String ?? EndPointURLs.defaultImageURL) { img in

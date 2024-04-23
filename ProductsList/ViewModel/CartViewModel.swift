@@ -32,7 +32,7 @@ class CartViewModel {
     
     /// fetchAllProductAddedToCartFrom DB
     /// - Returns: Array of Managed Objects from DB
-    func fetchAllProductAddedToCart() -> [NSManagedObject]? {
+    func fetchAllProductAddedToCart() -> [ProductItem]? {
         return self.productsCoreDataHelper.fetchAllProductAddedToCart()
     }
 }

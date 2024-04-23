@@ -1,12 +1,8 @@
 
-//
-
 import UIKit
 import CoreData
 
 class ProductCartCell: UITableViewCell {
-    
-    
     @IBOutlet weak var productTitleLabel: UILabel!
     @IBOutlet weak var productCategoryLabel: UILabel!
     @IBOutlet weak var addButton: UIButton!
@@ -26,12 +22,11 @@ class ProductCartCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configureWithDatabaseObject(_ product: NSManagedObject) {
+    func configureWithDatabaseObject(_ product: ProductItem) {
         productTitleLabel.text = product.value(forKeyPath: Constants.titleString) as? String
         productCategoryLabel.text = product.value(forKeyPath: Constants.categoryString) as? String
-        quantityLabe2.text = "Quantity - 1"
-      //  priceLabel.text = "$\(product.value(forKeyPath: Constants.categoryString) as? String ?? 0)"
-
+        quantityLabe2.text = "\(Constants.quantConst)\(product.count)"
+        priceLabel.text = "$\(product.price)"
     }
 
     func setImage(_ img: UIImage?) {

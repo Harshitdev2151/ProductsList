@@ -75,6 +75,7 @@ extension ViewController: RootViewModelDelegate {
 
     func showError(message: String) {
         DispatchQueue.main.async { [weak self] in
+            self?.addAlertController(title: Constants.errorMessage, message: Constants.errorTitle)
             self?.activityIndicatorView.stopAnimating()
             self?.errorButton.isHidden = false
         }

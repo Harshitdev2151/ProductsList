@@ -54,25 +54,13 @@ class DetailViewController: UIViewController {
 }
 
 extension DetailViewController {
-    
-//    /// Iniitial set up for all Label with the data coming from previous Controller
-//    func initializeLabel() {
-//        self.titleLabel.text = self.product?.title
-//        self.descLbl.text = self.product?.description
-//        self.priceLbl.text = String(self.product?.price ?? 0)
-//        self.ratingLbl.text = String(self.product?.rating ?? 0)
-//
-//        self.brandLbl.text = self.product?.brand
-//        self.categoryLbl.text = self.product?.category
-//    }
-
     /// Iniitial set up for all Label with the data coming from previous Controller
     func initializeLabel() {
         self.titleLabel.text = self.product?.title
         self.descLbl.text = self.product?.description
-        self.priceLbl.text = "Price - $\(String(self.product?.price ?? 0))"
-        self.ratingLbl.text = "Rating - \(String(self.product?.rating ?? 0))"
-        self.brandLbl.text = "Brand - \(product?.brand ?? "") (\(product?.category ?? ""))"
+        self.priceLbl.text = "\(Constants.priceConst)$\(String(self.product?.price ?? 0))"
+        self.ratingLbl.text = "\(Constants.ratingConst)\(String(self.product?.rating ?? 0))"
+        self.brandLbl.text = "\(Constants.brandConst)\(product?.brand ?? "") (\(product?.category ?? ""))"
         self.categoryLbl.text = ""
         self.rateButton.setTitle("\(product?.rating ?? 0)", for: .normal)
     }
@@ -81,7 +69,8 @@ extension DetailViewController {
     /// - Parameter sender: sender description
     @IBAction func addToCart(_ sender: Any) {
         if cartBtn.titleLabel?.text == Constants.addToCartConstant {
-            self.detailProductViewModel.saveData(self.product ?? Product())
+            _ = try? self.detailProductViewModel.updateProduct(self.product ?? Product())
+            self.addAlertController(title: Constants.prodAddSuccessTitle, message: Constants.prodAddSuccessMessage)
             self.setRightNavigationItem(employeeCoreDataInteractor: self.productsCoreDataHelper)
             cartBtn.setTitle(Constants.goToCartConstant, for: .normal)
 

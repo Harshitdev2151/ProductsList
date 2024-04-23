@@ -29,9 +29,11 @@ class DetailProductViewModel {
         }
     }
     
-    /// saveData in DB
-    /// - Parameter productInfo: productInfo to add in DB
-    func saveData(_ productInfo: Product) {
-        self.productsCoreDataHelper.saveData(productInfo)
+    /// Update Product in DB
+    /// - Parameter product: product description
+    /// - Returns: Error if it opccurs else nil
+    func updateProduct(_ product: Product) throws -> Error? {
+        return try? self.productsCoreDataHelper.updateProduct(product)
     }
+
 }
