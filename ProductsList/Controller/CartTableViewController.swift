@@ -14,13 +14,13 @@ import CoreData
 class CartTableViewController: UITableViewController {
 
     var products = [NSManagedObject]()
-    var productsCoreDataHelper: ProductsCoreDataHelper!
-    private var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-    lazy var viewModel : RootViewModel = {
-        let  viewModel = RootViewModel(productsService: ProductsService(), imageLoader: AsyncImageView())
+    lazy var cartViewModel : CartViewModel = {
+        let viewModel = CartViewModel(imageLoader: AsyncImageView(),
+                               productsCoreDataHelper: self.productsCoreDataHelper)
         return viewModel
     }()
 
+    var productsCoreDataHelper: ProductsCoreDataHelper!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = Constants.cartViewTitle
@@ -42,7 +42,7 @@ class CartTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productsTableViewCellIdentifier, for: indexPath) as? ProductsTableViewCell
         let product = self.products[indexPath.row]
         cell?.configureWithDatabaseObject(product)
-        self.viewModel.fetchImage(product.value(forKeyPath: Constants.thumbnailString) as? String ?? EndPointURLs.defaultImageURL) { img in
+        self.cartViewModel.fetchImage(product.value(forKeyPath: Constants.thumbnailString) as? String ?? EndPointURLs.defaultImageURL) { img in
             cell?.setImage(img ?? UIImage(named: Constants.defaultLoaderImage))
         }
         return cell ?? UITableViewCell()
@@ -53,7 +53,7 @@ extension CartTableViewController {
 
     /// Function to fetch all stored data from DB
     func loadDatafromDB() {
-        if let products = self.productsCoreDataHelper.fetchAllProductAddedToCart() {
+        if let products = self.cartViewModel.fetchAllProductAddedToCart() {
             self.products = products
             self.tableView.reloadData()
         }

@@ -18,5 +18,6 @@ enum ServerError: Error {
 enum NetworkError: Error {
     case invalidURL
     case requestFailed
+    case incorrectDataFormat
     // Other possible errors
 }

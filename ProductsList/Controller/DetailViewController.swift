@@ -21,7 +21,11 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var categoryLbl: UILabel!
     @IBOutlet weak var productImgView: UIImageView!
 
-    var viewModel: RootViewModel = RootViewModel(productsService: ProductsService(), imageLoader: AsyncImageView())
+    lazy var detailProductViewModel : DetailProductViewModel = {
+        let viewModel = DetailProductViewModel(imageLoader: AsyncImageView(),
+                               productsCoreDataHelper: self.productsCoreDataHelper)
+        return viewModel
+    }()
     var product: Product?
     private let urlString = EndPointURLs.defaultImageURL
     private var imageLoader: ImageLoaderProtocol = AsyncImageView()
@@ -32,7 +36,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         initializeLabel()
         self.title = Constants.detailVCTitle
-        viewModel.fetchImage(product?.thumbnail ?? EndPointURLs.defaultImageURL) { img in
+        detailProductViewModel.fetchImage(product?.thumbnail ?? EndPointURLs.defaultImageURL) { img in
             DispatchQueue.main.async {
                 if let image = img {
                     self.productImgView.image = image
@@ -66,7 +70,7 @@ extension DetailViewController {
     /// - Parameter sender: sender description
     @IBAction func addToCart(_ sender: Any) {
         if cartBtn.titleLabel?.text == Constants.addToCartConstant {
-            self.productsCoreDataHelper.saveData(self.product ?? Product())
+            self.detailProductViewModel.saveData(self.product ?? Product())
             self.setRightNavigationItem(employeeCoreDataInteractor: self.productsCoreDataHelper)
             cartBtn.setTitle(Constants.goToCartConstant, for: .normal)
 

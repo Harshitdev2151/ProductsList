@@ -27,13 +27,19 @@ class ProductsService: ProductsServiceProtocol {
             completion(.failure(.invalidURL))
             return
         }
-        URLSession.shared.dataTask(with: serviceURL) { data, response , error in
+        var request = RequestFactory.request(method: .GET, url: serviceURL)
+
+        if let reachability = Reachability(), !reachability.isReachable {
+            request.cachePolicy = .returnCacheDataDontLoad
+        }
+
+        URLSession.shared.dataTask(with: request) { data, response , error in
             if error != nil {
                 completion(.failure(.requestFailed))
                 return
             }
             guard let newData = data else {
-                completion(.failure(.requestFailed))
+                completion(.failure(.incorrectDataFormat))
                 return
             }
             if let response = response as? HTTPURLResponse, 200...299 ~= response.statusCode, error == nil {
