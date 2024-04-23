@@ -13,14 +13,17 @@ import CoreData
  */
 class CartTableViewController: UITableViewController {
 
-    var products = [ProductItem]()
+    // MARK: - Detail ViewController Dependency Injection
     lazy var cartViewModel : CartViewModel = {
         let viewModel = CartViewModel(imageLoader: AsyncImageView(),
-                               productsCoreDataHelper: self.productsCoreDataHelper)
+                                      productsCoreDataHelper: self.productsCoreDataHelper)
         return viewModel
     }()
-
     var productsCoreDataHelper: ProductsCoreDataHelper!
+
+    var products = [ProductItem]()
+
+    // MARK: -  CartViewController Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = Constants.cartViewTitle

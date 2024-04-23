@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import CoreData
 
+/// ViewModel for CartView
 class CartViewModel {
 
     var productsCoreDataHelper: ProductsCoreDataHelper

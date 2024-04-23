@@ -107,4 +107,14 @@ struct ProductsCoreDataHelper {
         }
         return nil
     }
+    
+    /// Delete all data from Entity
+    /// - Parameter entity: entity description
+    func deleteAllData(entity: String)
+    {
+        let ReqVar = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        let DelAllReqVar = NSBatchDeleteRequest(fetchRequest: ReqVar)
+        do { try self.context.execute(DelAllReqVar) }
+        catch { print(error) }
+    }
 }

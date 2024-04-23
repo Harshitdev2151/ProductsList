@@ -11,30 +11,35 @@ import CoreData
 /**
  Root VC / startin screen of app
  */
+// MARK: - Root ViewController
 class ViewController: UIViewController {
+
+    // MARK: - Root ViewController Dependency Injection
 
     lazy var viewModel : RootViewModel = {
         let  viewModel = RootViewModel(productsService: self.productsService, delegate: self)
         return viewModel
     }()
-
-    @IBOutlet weak var tableView: UITableView!
-    var products: Products?
-    var fetchingMore = false
-    var limit = 0
     private var productsService: ProductsServiceProtocol = ProductsService()
     open var calledSegue: UIStoryboardSegue!
 
     private var context : NSManagedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext ?? NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     var productsCoreDataHelper: ProductsCoreDataHelper?
 
-
+    // MARK: - Root ViewController IBOutlet
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var errorButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
 
+    var products: Products?
+    var fetchingMore = false
+    var limit = 0
+
+    // MARK: -  ViewController Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.navigationController?.navigationBar.isHidden = true
         activityIndicatorView.startAnimating()
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 400
@@ -45,16 +50,14 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.productsCoreDataHelper = ProductsCoreDataHelper(withContext: self.context)
-
-        guard let employeeCoreDataInteractor = self.productsCoreDataHelper else { return  }
-
-        self.setRightNavigationItem(employeeCoreDataInteractor: employeeCoreDataInteractor)
+        guard let productsCoreDataHelper = self.productsCoreDataHelper else { return  }
+        self.setRightNavigationItem(productsCoreDataHelper: productsCoreDataHelper)
     }
 
 }
 
 /**
- helper delegate to handle success/ failure API response
+ Helper delegate to handle success/ failure API response
  */
 extension ViewController: RootViewModelDelegate {
     func fetchProducts(_ products: Products?) {
@@ -67,14 +70,16 @@ extension ViewController: RootViewModelDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.errorButton.isHidden = true
             self?.activityIndicatorView.stopAnimating()
-            self?.tableView.reloadData()
             self?.fetchingMore = false
             self?.tableView?.tableFooterView?.isHidden = true
+            self?.navigationController?.navigationBar.isHidden = false
+            self?.tableView.reloadData()
         }
     }
 
     func showError(message: String) {
         DispatchQueue.main.async { [weak self] in
+            self?.navigationController?.navigationBar.isHidden = false
             self?.addAlertController(title: Constants.errorMessage, message: Constants.errorTitle)
             self?.activityIndicatorView.stopAnimating()
             self?.errorButton.isHidden = false
@@ -96,7 +101,7 @@ extension ViewController: UITableViewDataSource {
         let product = self.products?.productList?[indexPath.row] ?? Product()
         cell?.configureWith(product)
         viewModel.fetchImage(product.thumbnail ?? EndPointURLs.defaultImageURL) { img in
-            DispatchQueue.main.async { 
+            DispatchQueue.main.async {
                 if(cell?.tag == indexPath.row) {
                     cell?.setImage(img ?? UIImage(named: Constants.defaultLoaderImage))
                 }

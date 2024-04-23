@@ -11,9 +11,9 @@ import UIKit
 extension UIViewController {
     /// Set right naviation Item on Naviation bar which is used in all controller
     /// - Parameter employeeCoreDataInteractor: coreData helper object to do CRUD opeartion
-    func setRightNavigationItem(employeeCoreDataInteractor: ProductsCoreDataHelper) {
+    func setRightNavigationItem(productsCoreDataHelper: ProductsCoreDataHelper) {
         var currentCartCount = 0
-        if let products = employeeCoreDataInteractor.fetchAllProductAddedToCart() {
+        if let products = productsCoreDataHelper.fetchAllProductAddedToCart() {
             currentCartCount = Int(products.reduce(0) { partialResult, productItem in
                 partialResult + productItem.count
             })

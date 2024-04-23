@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - Root ViewController Configuration
 /**
  Viewcontroller methods needed to perform press funcionality and Load more at bottom of tableview
  */

@@ -13,6 +13,7 @@ import CoreData
  */
 class DetailViewController: UIViewController {
 
+    // MARK: - Detail ViewController IBOutlet
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descLbl: UILabel!
     @IBOutlet weak var priceLbl: UILabel!
@@ -21,18 +22,23 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var categoryLbl: UILabel!
     @IBOutlet weak var productImgView: UIImageView!
     @IBOutlet weak var rateButton: UIButton!
+    @IBOutlet weak var cartBtn: UIButton!
 
+
+    // MARK: - Detail ViewController Dependency Injection
     lazy var detailProductViewModel : DetailProductViewModel = {
         let viewModel = DetailProductViewModel(imageLoader: AsyncImageView(),
-                               productsCoreDataHelper: self.productsCoreDataHelper)
+                                               productsCoreDataHelper: self.productsCoreDataHelper)
         return viewModel
     }()
+    var productsCoreDataHelper: ProductsCoreDataHelper!
+
+
     var product: Product?
     private let urlString = EndPointURLs.defaultImageURL
     private var imageLoader: ImageLoaderProtocol = AsyncImageView()
-    var productsCoreDataHelper: ProductsCoreDataHelper!
-    @IBOutlet weak var cartBtn: UIButton!
 
+    // MARK: -  DetailViewController Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeLabel()
@@ -48,7 +54,7 @@ class DetailViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.setRightNavigationItem(employeeCoreDataInteractor: self.productsCoreDataHelper)
+        self.setRightNavigationItem(productsCoreDataHelper: self.productsCoreDataHelper)
         cartBtn.setTitle(Constants.addToCartConstant, for: .normal)
     }
 }
@@ -71,15 +77,13 @@ extension DetailViewController {
         if cartBtn.titleLabel?.text == Constants.addToCartConstant {
             _ = try? self.detailProductViewModel.updateProduct(self.product ?? Product())
             self.addAlertController(title: Constants.prodAddSuccessTitle, message: Constants.prodAddSuccessMessage)
-            self.setRightNavigationItem(employeeCoreDataInteractor: self.productsCoreDataHelper)
+            self.setRightNavigationItem(productsCoreDataHelper: self.productsCoreDataHelper)
             cartBtn.setTitle(Constants.goToCartConstant, for: .normal)
-
-
         } else {
             guard let cartVC = self.storyboard?.instantiateViewController(identifier: Constants.cartTableViewController) as? CartTableViewController else { return }
 
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-              return
+                return
             }
             cartVC.productsCoreDataHelper = ProductsCoreDataHelper(withContext: appDelegate.persistentContainer.viewContext)
             self.navigationController?.pushViewController(cartVC, animated: true)

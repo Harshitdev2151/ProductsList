@@ -16,7 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        // MARK: Navigation Bar Customisation
+        customNavigationBarAppearence()
+        deleteEntity()
+        return true
+    }
+
+    // MARK: Navigation Bar Customisation
+    private func customNavigationBarAppearence() {
         // To change background colour and tint color
         if #available(iOS 15, *) {
             let appearance = UINavigationBarAppearance()
@@ -31,9 +37,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance().scrollEdgeAppearance = appearance
         }
 
-        return true
     }
 
+    // MARK: Delete Core data entity on launch
+    private  func deleteEntity() {
+        if  let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            /*Before you can do anything with Core Data, you need a managed object context. */
+            let managedContext = appDelegate.persistentContainer.viewContext
+            let productsCoreDataInteractor = ProductsCoreDataHelper(withContext: managedContext)
+            productsCoreDataInteractor.deleteAllData(entity: Constants.productItemEntity)
+        }
+    }
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+/// ViewModel for DetailVC for particular product
 class DetailProductViewModel {
 
     var productsCoreDataHelper: ProductsCoreDataHelper
