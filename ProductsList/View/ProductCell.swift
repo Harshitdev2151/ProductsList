@@ -30,7 +30,13 @@ class ProductCell: UITableViewCell {
 
     func configureWith(_ product: Product) {
         productTitleLabel.text = product.title
-        productCategoryLabel.text = product.category
+
+        // Attributed string usage
+        let attributedString = NSMutableAttributedString().normal(Constants.categoryConst)
+        let attributedStringForBold = NSMutableAttributedString().bold(product.category?.firstUppercased ?? "")
+        attributedString.append(attributedStringForBold)
+        productCategoryLabel.attributedText =  attributedString
+
         descriptionLabel.text = product.description
         if let price = product.price {
             priceLabel.text = "$\(price)"
@@ -49,5 +55,5 @@ class ProductCell: UITableViewCell {
         super.prepareForReuse()
         self.productImageView.image = nil
     }
-    
+
 }

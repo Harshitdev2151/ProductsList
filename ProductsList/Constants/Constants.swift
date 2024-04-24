@@ -6,7 +6,7 @@
 
 /// Constant use throughout app
 struct Constants {
-    static let rootVCTitle = "Product"
+    static let rootVCTitle = "ProductList"
     static let defaultLoaderImage = "defaultLoaderImage"
     static let detailVCSegue = "detailVC"
     static let detailVCTitle = "ProductDetail"
@@ -31,6 +31,7 @@ struct Constants {
     static let ratingConst = "Rating - "
     static let brandConst = "Brand - "
     static let quantConst = "Quantity - "
+    static let categoryConst = "Category - "
     static let prodAddSuccessTitle = "Product Added"
     static let prodAddSuccessMessage = "Successfully"
 

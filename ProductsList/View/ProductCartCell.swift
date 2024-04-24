@@ -24,9 +24,15 @@ class ProductCartCell: UITableViewCell {
     
     func configureWithDatabaseObject(_ product: ProductItem) {
         productTitleLabel.text = product.value(forKeyPath: Constants.titleString) as? String
-        productCategoryLabel.text = product.value(forKeyPath: Constants.categoryString) as? String
-        quantityLabe2.text = "\(Constants.quantConst)\(product.count)"
+        productCategoryLabel.text = (product.value(forKeyPath: Constants.categoryString) as? String)?.firstUppercased
+        // Attributed string usage
+        let attributedString = NSMutableAttributedString().normal(Constants.quantConst)
+        let attributedStringForBold = NSMutableAttributedString().bold(String(product.count))
+        attributedString.append(attributedStringForBold)
+        quantityLabe2.attributedText =  attributedString
+
         priceLabel.text = "$\(product.price)"
+        //rateButton.setTitle("\(product.rating )", for: .normal)
     }
 
     func setImage(_ img: UIImage?) {

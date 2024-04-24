@@ -39,7 +39,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.navigationController?.navigationBar.isHidden = true
         activityIndicatorView.startAnimating()
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 400
@@ -51,9 +50,12 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
         self.productsCoreDataHelper = ProductsCoreDataHelper(withContext: self.context)
         guard let productsCoreDataHelper = self.productsCoreDataHelper else { return  }
+        //Adding the right navigation item to show cart count
         self.setRightNavigationItem(productsCoreDataHelper: productsCoreDataHelper)
+        //Hide right navigation item if no product is there
+        let alphaValue = self.products?.productList == nil ? 0: 1
+        self.navigationItem.rightBarButtonItem?.customView?.alpha = CGFloat(alphaValue)
     }
-
 }
 
 /**
@@ -68,18 +70,19 @@ extension ViewController: RootViewModelDelegate {
             self.products?.productList?.append(contentsOf: products?.productList ?? [Product()])
         }
         DispatchQueue.main.async { [weak self] in
+            self?.navigationItem.rightBarButtonItem?.customView?.alpha = 1
             self?.errorButton.isHidden = true
             self?.activityIndicatorView.stopAnimating()
             self?.fetchingMore = false
             self?.tableView?.tableFooterView?.isHidden = true
-            self?.navigationController?.navigationBar.isHidden = false
             self?.tableView.reloadData()
+
         }
     }
 
     func showError(message: String) {
         DispatchQueue.main.async { [weak self] in
-            self?.navigationController?.navigationBar.isHidden = false
+            self?.navigationItem.rightBarButtonItem?.customView?.alpha = 1
             self?.addAlertController(title: Constants.errorMessage, message: Constants.errorTitle)
             self?.activityIndicatorView.stopAnimating()
             self?.errorButton.isHidden = false

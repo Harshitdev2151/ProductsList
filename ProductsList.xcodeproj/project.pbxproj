@@ -45,6 +45,7 @@
 		EEDFBCB42BC6FF1900836977 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDFBCB32BC6FF1900836977 /* Constants.swift */; };
 		EEDFBCB62BC7E90900836977 /* ServerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDFBCB52BC7E90900836977 /* ServerError.swift */; };
 		EEDFBCB82BC7EA6300836977 /* ViewControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDFBCB72BC7EA6300836977 /* ViewControllerHelper.swift */; };
+		EEFFCAD32BD8E42700A207A3 /* String+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFFCAD22BD8E42700A207A3 /* String+Helper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,7 @@
 		EEDFBCB32BC6FF1900836977 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EEDFBCB52BC7E90900836977 /* ServerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerError.swift; sourceTree = "<group>"; };
 		EEDFBCB72BC7EA6300836977 /* ViewControllerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerHelper.swift; sourceTree = "<group>"; };
+		EEFFCAD22BD8E42700A207A3 /* String+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helper.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +218,7 @@
 				EE46AC8D2BBC36A900581403 /* ViewControllerExtension.swift */,
 				EE46AC952BBE8C0300581403 /* UIBarButtonItem+Badge.swift */,
 				EEDFBCB52BC7E90900836977 /* ServerError.swift */,
+				EEFFCAD22BD8E42700A207A3 /* String+Helper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -410,6 +413,7 @@
 				EE171D472BBB36110003029E /* ProductsService.swift in Sources */,
 				EE815C082BBBC306008B3E48 /* ProductsTableViewCell.swift in Sources */,
 				EE46AC8E2BBC36A900581403 /* ViewControllerExtension.swift in Sources */,
+				EEFFCAD32BD8E42700A207A3 /* String+Helper.swift in Sources */,
 				EE171D152BBB35D80003029E /* ViewController.swift in Sources */,
 				EE171D1B2BBB35D80003029E /* ProductsList.xcdatamodeld in Sources */,
 				EEB03D942BD7DB3100FC5B5A /* CartViewModel.swift in Sources */,

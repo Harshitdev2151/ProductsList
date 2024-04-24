@@ -18,12 +18,10 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var descLbl: UILabel!
     @IBOutlet weak var priceLbl: UILabel!
     @IBOutlet weak var brandLbl: UILabel!
-    @IBOutlet weak var ratingLbl: UILabel!
     @IBOutlet weak var categoryLbl: UILabel!
     @IBOutlet weak var productImgView: UIImageView!
     @IBOutlet weak var rateButton: UIButton!
     @IBOutlet weak var cartBtn: UIButton!
-
 
     // MARK: - Detail ViewController Dependency Injection
     lazy var detailProductViewModel : DetailProductViewModel = {
@@ -54,19 +52,20 @@ class DetailViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        //Adding the right navigation item to show cart count
         self.setRightNavigationItem(productsCoreDataHelper: self.productsCoreDataHelper)
         cartBtn.setTitle(Constants.addToCartConstant, for: .normal)
     }
 }
 
+/// DetailVC Helper functions
 extension DetailViewController {
     /// Iniitial set up for all Label with the data coming from previous Controller
     func initializeLabel() {
         self.titleLabel.text = self.product?.title
         self.descLbl.text = self.product?.description
         self.priceLbl.text = "\(Constants.priceConst)$\(String(self.product?.price ?? 0))"
-        self.ratingLbl.text = "\(Constants.ratingConst)\(String(self.product?.rating ?? 0))"
-        self.brandLbl.text = "\(Constants.brandConst)\(product?.brand ?? "") (\(product?.category ?? ""))"
+        self.brandLbl.text = "\(Constants.brandConst)\(product?.brand ?? "") (\(product?.category?.firstUppercased ?? ""))"
         self.categoryLbl.text = ""
         self.rateButton.setTitle("\(product?.rating ?? 0)", for: .normal)
     }

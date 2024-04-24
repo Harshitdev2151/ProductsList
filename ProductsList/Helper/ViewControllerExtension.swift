@@ -29,6 +29,7 @@ extension UIViewController {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
+
         cartVC.productsCoreDataHelper = ProductsCoreDataHelper(withContext: appDelegate.persistentContainer.viewContext)
         self.navigationController?.pushViewController(cartVC, animated: true)
     }
